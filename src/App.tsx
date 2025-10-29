@@ -37,9 +37,9 @@ function App() {
       >
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-heading-lg">Event Networking Web App</CardTitle>
+            <CardTitle className="text-heading-lg">Women in Tech Summit 2025</CardTitle>
             <CardDescription>
-              Modern React web application with Vite, TypeScript, and Shadcn UI
+              Women in Tech Summit 2025 Web App
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

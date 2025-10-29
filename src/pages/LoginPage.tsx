@@ -240,7 +240,7 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-heading-lg text-text-primary">Welcome Back</CardTitle>
           <CardDescription className="text-body-md text-text-tertiary">
-            Sign in to access the event networking platform
+            Sign in to access Women in Tech Summit 2025
           </CardDescription>
         </CardHeader>
         <CardContent>

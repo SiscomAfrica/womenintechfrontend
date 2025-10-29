@@ -1,0 +1,6 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="24" fill="#FF6B35"/>
+  <circle cx="96" cy="70" r="25" fill="white"/>
+  <rect x="60" y="110" width="72" height="40" rx="20" fill="white"/>
+  <text x="96" y="155" text-anchor="middle" fill="#FF6B35" font-family="Arial, sans-serif" font-size="12" font-weight="bold">EVENT</text>
+</svg>

@@ -1,0 +1,330 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./styles/accessibility.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Global mobile responsiveness fixes */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Prevent horizontal scroll on all elements */
+.no-scrollbar-x {
+  overflow-x: hidden !important;
+  max-width: 100%;
+}
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area for notched devices */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-pt {
+  padding-top: env(safe-area-inset-top);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.75rem; /* 12px - matching RN app border radius */
+  
+  /* Background colors from RN app */
+  --background: #FFFFFF; /* --bg-primary */
+  --foreground: #1A1A1A; /* --text-primary */
+  --card: #FFFFFF; /* --bg-primary */
+  --card-foreground: #1A1A1A; /* --text-primary */
+  --popover: #FFFFFF; /* --bg-primary */
+  --popover-foreground: #1A1A1A; /* --text-primary */
+  
+  /* Primary orange from RN app (#FF6B35) */
+  --primary: #FF6B35; /* --primary-orange */
+  --primary-foreground: #FFFFFF;
+  
+  /* Secondary blue from RN app (#007AFF) */
+  --secondary: #007AFF; /* --primary-blue */
+  --secondary-foreground: #FFFFFF;
+  
+  /* Muted colors from RN app */
+  --muted: #F5F5F5; /* --bg-secondary */
+  --muted-foreground: #666666; /* --text-tertiary */
+  
+  /* Accent using secondary gray */
+  --accent: #F8F9FA; /* --bg-tertiary */
+  --accent-foreground: #333333; /* --text-secondary */
+  
+  /* Success green from RN app */
+  --destructive: #FF3B30; /* iOS red for destructive actions */
+  --success: #4CAF50; /* --success-green */
+  
+  /* Border colors from RN app */
+  --border: #E0E0E0; /* --border-dark */
+  --input: #F9F9F9; /* --bg-input */
+  --ring: #FF6B35; /* Focus ring using primary orange */
+  
+  /* Chart colors using session type colors from RN app */
+  --chart-1: #FF6B35; /* Keynote - primary orange */
+  --chart-2: #4ECDC4; /* Workshop */
+  --chart-3: #95E1D3; /* Networking */
+  --chart-4: #F38181; /* Panel */
+  --chart-5: #A8E6CF; /* Break */
+  
+  /* Sidebar colors */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1A1A1A;
+  --sidebar-primary: #FF6B35;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F8F9FA;
+  --sidebar-accent-foreground: #333333;
+  --sidebar-border: #E8E8E8; /* --border-medium */
+  --sidebar-ring: #FF6B35;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Custom CSS variables for RN app design system */
+:root {
+  /* Typography scale from RN app */
+  --font-size-caption: 0.6875rem; /* 11px */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.8125rem; /* 13px */
+  --font-size-base: 0.875rem; /* 14px */
+  --font-size-md: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.75rem; /* 28px */
+  
+  /* Font weights from RN app */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Spacing scale from RN app */
+  --spacing-xs: 0.5rem; /* 8px */
+  --spacing-sm: 0.75rem; /* 12px */
+  --spacing-md: 1rem; /* 16px */
+  --spacing-lg: 1.25rem; /* 20px */
+  --spacing-xl: 1.5rem; /* 24px */
+  
+  /* Border radius scale from RN app */
+  --radius-sm: 0.5rem; /* 8px */
+  --radius-md: 0.75rem; /* 12px */
+  --radius-lg: 1rem; /* 16px */
+  --radius-xl: 1.25rem; /* 20px */
+  
+  /* Shadow values from RN app */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Ensure button text is always visible with proper contrast */
+  button {
+    color: inherit;
+  }
+  
+  /* Fix any potential contrast issues */
+  .bg-primary-orange {
+    background-color: #FF6B35 !important;
+    color: white !important;
+  }
+  
+  .text-primary-orange {
+    color: #FF6B35 !important;
+  }
+  
+  .bg-primary-blue {
+    background-color: #007AFF !important;
+    color: white !important;
+  }
+  
+  .text-primary-blue {
+    color: #007AFF !important;
+  }
+  
+  /* Typography classes matching RN app */
+  .text-heading-xl { 
+    font-size: var(--font-size-3xl); 
+    font-weight: var(--font-weight-bold); 
+    line-height: 1.2; 
+  }
+  
+  .text-heading-lg { 
+    font-size: var(--font-size-2xl); 
+    font-weight: var(--font-weight-bold); 
+    line-height: 1.3; 
+  }
+  
+  .text-heading-md { 
+    font-size: var(--font-size-xl); 
+    font-weight: var(--font-weight-semibold); 
+    line-height: 1.3; 
+  }
+  
+  .text-heading-sm { 
+    font-size: var(--font-size-lg); 
+    font-weight: var(--font-weight-bold); 
+    line-height: 1.3; 
+  }
+  
+  .text-body-lg { 
+    font-size: var(--font-size-md); 
+    font-weight: var(--font-weight-normal); 
+    line-height: 1.5; 
+  }
+  
+  .text-body-md { 
+    font-size: var(--font-size-base); 
+    font-weight: var(--font-weight-normal); 
+    line-height: 1.4; 
+  }
+  
+  .text-body-sm { 
+    font-size: var(--font-size-sm); 
+    font-weight: var(--font-weight-medium); 
+    line-height: 1.4; 
+  }
+  
+  .text-body-xs { 
+    font-size: var(--font-size-xs); 
+    font-weight: var(--font-weight-medium); 
+    line-height: 1.3; 
+  }
+  
+  .text-button { 
+    font-size: var(--font-size-md); 
+    font-weight: var(--font-weight-semibold); 
+  }
+  
+  .text-button-sm { 
+    font-size: var(--font-size-base); 
+    font-weight: var(--font-weight-semibold); 
+  }
+  
+  .text-caption { 
+    font-size: var(--font-size-caption); 
+    font-weight: var(--font-weight-medium); 
+    letter-spacing: 0.5px; 
+  }
+  
+  /* Shadow utilities */
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+}

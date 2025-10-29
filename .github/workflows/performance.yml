@@ -1,0 +1,199 @@
+name: Performance Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run performance tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: web-app/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: web-app
+      run: npm ci
+      
+    - name: Build application
+      working-directory: web-app
+      run: npm run build
+      
+    - name: Install Lighthouse CI
+      run: npm install -g @lhci/cli@0.15.x
+      
+    - name: Run Lighthouse CI
+      working-directory: web-app
+      run: |
+        npm run preview &
+        sleep 10
+        lhci autorun --config=lighthouserc.js
+        kill %1
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        
+    - name: Run custom performance tests
+      working-directory: web-app
+      run: node scripts/performance-test.js --runs 3 --output performance-results
+      
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-results-node-${{ matrix.node-version }}
+        path: web-app/performance-results/
+        retention-days: 30
+        
+    - name: Comment PR with performance results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          try {
+            const reportPath = path.join('web-app', 'performance-results', 'performance-report.md');
+            const report = fs.readFileSync(reportPath, 'utf8');
+            
+            const comment = `## 🚀 Performance Test Results (Node.js ${{ matrix.node-version }})
+            
+            ${report}
+            
+            <details>
+            <summary>View detailed Lighthouse results</summary>
+            
+            Check the uploaded artifacts for detailed Lighthouse reports.
+            </details>`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          } catch (error) {
+            console.log('Could not read performance report:', error.message);
+          }
+          
+    - name: Check performance thresholds
+      working-directory: web-app
+      run: |
+        if [ -f "performance-results/summary.json" ]; then
+          node -e "
+            const summary = require('./performance-results/summary.json');
+            const failed = Object.entries(summary.thresholdResults)
+              .filter(([, result]) => !result.passed);
+            
+            if (failed.length > 0) {
+              console.log('❌ Performance thresholds failed:');
+              failed.forEach(([metric, result]) => {
+                console.log(\`  \${metric}: \${result.value} (threshold: \${result.threshold})\`);
+              });
+              process.exit(1);
+            } else {
+              console.log('✅ All performance thresholds passed!');
+            }
+          "
+        fi
+
+  lighthouse-ci:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: web-app/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: web-app
+      run: npm ci
+      
+    - name: Build application
+      working-directory: web-app
+      run: npm run build
+      
+    - name: Run Lighthouse CI
+      working-directory: web-app
+      run: |
+        npm run preview &
+        sleep 10
+        npx @lhci/cli@0.15.x autorun
+        kill %1
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        
+    - name: Upload Lighthouse results
+      uses: actions/upload-artifact@v4
+      with:
+        name: lighthouse-results
+        path: web-app/.lighthouseci/
+        retention-days: 30
+
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: web-app/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: web-app
+      run: npm ci
+      
+    - name: Analyze bundle
+      working-directory: web-app
+      run: npm run build:analyze
+      
+    - name: Upload bundle analysis
+      uses: actions/upload-artifact@v4
+      with:
+        name: bundle-analysis
+        path: web-app/dist/stats.html
+        retention-days: 30
+        
+    - name: Check bundle size
+      working-directory: web-app
+      run: |
+        # Check if bundle size is within limits
+        BUNDLE_SIZE=$(du -sb dist/ | cut -f1)
+        MAX_SIZE=$((2 * 1024 * 1024)) # 2MB limit
+        
+        echo "Bundle size: $(($BUNDLE_SIZE / 1024)) KB"
+        echo "Max allowed: $(($MAX_SIZE / 1024)) KB"
+        
+        if [ $BUNDLE_SIZE -gt $MAX_SIZE ]; then
+          echo "❌ Bundle size exceeds limit!"
+          exit 1
+        else
+          echo "✅ Bundle size is within limits"
+        fi

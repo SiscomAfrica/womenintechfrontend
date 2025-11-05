@@ -3,11 +3,14 @@ import { useAuthStore } from "@/stores/auth-store"
 import { NavLink, Link } from "react-router-dom"
 import { useState, useEffect, useRef } from "react"
 import { NotificationCenter } from "@/components/NotificationCenter"
+import { usePendingMeetingsCount } from "@/hooks/useMeetings"
+import { Badge } from "@/components/ui/badge"
 
 export function Header() {
   const { user, logout } = useAuthStore()
   const [showUserMenu, setShowUserMenu] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
+  const pendingMeetingsCount = usePendingMeetingsCount()
   
   
   // Debug: Log user object to see admin status
@@ -100,6 +103,24 @@ export function Header() {
           >
             Polls
           </NavLink>
+          <NavLink
+            to="/meetings"
+            className={({ isActive }) =>
+              `font-medium transition-colors relative ${
+                isActive ? 'text-[#60166b]' : 'text-[#333333] hover:text-[#60166b]'
+              }`
+            }
+          >
+            Meetings
+            {pendingMeetingsCount > 0 && (
+              <Badge 
+                variant="destructive" 
+                className="absolute -top-2 -right-3 h-5 min-w-[20px] px-1.5 text-xs"
+              >
+                {pendingMeetingsCount}
+              </Badge>
+            )}
+          </NavLink>
         </nav>
 
         {/* Right side - Notifications & User Menu */}
@@ -116,7 +137,7 @@ export function Header() {
                 e.stopPropagation()
                 setShowUserMenu(!showUserMenu)
               }}
-              className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+              className="flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer relative"
               aria-expanded={showUserMenu}
               aria-haspopup="true"
             >
@@ -128,6 +149,15 @@ export function Header() {
               <span className="hidden md:block text-[#333333] font-medium text-sm truncate max-w-[120px]">
                 {user?.profile?.name || user?.email?.split('@')[0] || 'User'}
               </span>
+              {/* Pending Meetings Badge */}
+              {pendingMeetingsCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-1 -right-1 h-5 min-w-[20px] px-1.5 text-[10px] font-semibold flex items-center justify-center rounded-full"
+                >
+                  {pendingMeetingsCount}
+                </Badge>
+              )}
             </button>
             
             {/* Backdrop for mobile */}
@@ -170,6 +200,28 @@ export function Header() {
                       <User className="h-4 w-4 md:h-5 md:w-5 text-[#60166b] flex-shrink-0" />
                     </div>
                     <span className="font-medium">Profile</span>
+                  </Link>
+                  <Link 
+                    to="/meetings"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowUserMenu(false)
+                    }}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-[#F8F9FA] active:bg-[#F0F0F0] text-sm md:text-base text-[#333333] transition-all duration-150"
+                    role="menuitem"
+                  >
+                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-purple-50">
+                      <User className="h-4 w-4 md:h-5 md:w-5 text-[#60166b] flex-shrink-0" />
+                    </div>
+                    <span className="font-medium flex-1">My Meetings</span>
+                    {pendingMeetingsCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="h-5 min-w-[20px] px-2 text-xs font-semibold flex items-center justify-center"
+                      >
+                        {pendingMeetingsCount}
+                      </Badge>
+                    )}
                   </Link>
                   {isAdmin && (
                     <Link 

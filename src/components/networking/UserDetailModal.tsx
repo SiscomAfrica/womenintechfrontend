@@ -1,7 +1,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Briefcase, Building, Mail, Linkedin, Twitter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Briefcase, Building, Mail, Linkedin, Twitter, Calendar } from 'lucide-react';
 import type { Attendee } from '@/services/networking';
+import { useState } from 'react';
+import { RequestMeetingModal } from './RequestMeetingModal';
 
 interface UserDetailModalProps {
   user: Attendee | null;
@@ -10,6 +13,8 @@ interface UserDetailModalProps {
 }
 
 export function UserDetailModal({ user, open, onClose }: UserDetailModalProps) {
+  const [showMeetingModal, setShowMeetingModal] = useState(false);
+  
   if (!user) return null;
 
   const getInitials = (name?: string) => {
@@ -35,13 +40,14 @@ export function UserDetailModal({ user, open, onClose }: UserDetailModalProps) {
                     Array.isArray(user.profile?.skills) ? user.profile.skills : [];
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" showCloseButton={true}>
-        <DialogHeader>
-          <DialogTitle className="sr-only">User Profile</DialogTitle>
-        </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={onClose}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" showCloseButton={true}>
+          <DialogHeader>
+            <DialogTitle className="sr-only">User Profile</DialogTitle>
+          </DialogHeader>
 
-        <div className="space-y-6">
+          <div className="space-y-6">
           {/* Profile Header */}
           <div className="flex items-start gap-4">
             {profilePhoto ? (
@@ -184,8 +190,28 @@ export function UserDetailModal({ user, open, onClose }: UserDetailModalProps) {
               </div>
             </div>
           )}
+
+          {/* Schedule Meeting Button */}
+          <div className="pt-4 border-t border-border-dark">
+            <Button
+              onClick={() => setShowMeetingModal(true)}
+              className="w-full bg-[#60166b] hover:bg-[#4a1154] text-white"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              Schedule Meeting
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
+
+    {/* Meeting Request Modal */}
+    <RequestMeetingModal
+      open={showMeetingModal}
+      onOpenChange={setShowMeetingModal}
+      receiverId={user.id || user.user_id}
+      receiverName={displayName}
+    />
+  </>
   );
 }

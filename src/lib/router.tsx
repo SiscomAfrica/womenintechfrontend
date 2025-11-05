@@ -14,6 +14,7 @@ import FeedbackPage from '@/pages/FeedbackPage'
 import NetworkingPage from '@/pages/NetworkingPage'
 import PollsPage from '@/pages/PollsPage'
 import PartnersPage from '@/pages/PartnersPage'
+import MeetingsPage from '@/pages/MeetingsPage'
 import AdminDashboardPage from '@/pages/AdminDashboardPage'
 import AdminUsersPage from '@/pages/AdminUsersPage'
 import AdminAnnouncementsPage from '@/pages/AdminAnnouncementsPage'
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: 'networking',
         element: <NetworkingPage />,
+      },
+      {
+        path: 'meetings',
+        element: <MeetingsPage />,
       },
       {
         path: 'polls',

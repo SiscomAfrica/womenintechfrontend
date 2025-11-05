@@ -151,7 +151,7 @@ export default function DashboardPage() {
               </p>
             )}
           </div>
-          <span className="text-xs px-2 py-1 rounded-full bg-[#FF6B35]/10 text-[#FF6B35]">
+          <span className="text-xs px-2 py-1 rounded-full bg-[#60166b]/10 text-[#60166b]">
             Day {session.day}
           </span>
         </div>
@@ -205,7 +205,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between gap-2 sm:gap-4">
         <div className="space-y-1 min-w-0 flex-1">
-          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-[#FF6B35] truncate">
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-[#60166b] truncate">
             {greeting}, {user?.profile?.name?.split(' ')[0] || user?.email?.split('@')[0] || "User"}!
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-[#666666]">
@@ -275,9 +275,9 @@ export default function DashboardPage() {
       </div>
 
       {}
-      <Card className="bg-gradient-to-r from-[#FF6B35]/5 to-[#007AFF]/5">
+      <Card className="bg-gradient-to-r from-[#60166b]/5 to-[#312e81]/5">
         <CardContent className="p-6">
-          <h2 className="text-xl font-bold mb-2">Welcome to Afrinovation Festival</h2>
+          <h2 className="text-xl font-bold mb-2">Welcome to Women in Tech Summit 2025</h2>
           <p className="text-[#666666]">
             Connect, learn, and grow with fellow attendees.
           </p>
@@ -290,10 +290,10 @@ export default function DashboardPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-[#FF6B35]">{sessions.length}</div>
+                <div className="text-2xl font-bold text-[#60166b]">{sessions.length}</div>
                 <div className="text-sm text-[#666666]">Total Sessions</div>
               </div>
-              <Calendar className="h-5 w-5 text-[#FF6B35]" />
+              <Calendar className="h-5 w-5 text-[#60166b]" />
             </div>
           </CardContent>
         </Card>
@@ -314,10 +314,10 @@ export default function DashboardPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-[#FF6B35]">{day1Sessions.length}</div>
+                <div className="text-2xl font-bold text-[#60166b]">{day1Sessions.length}</div>
                 <div className="text-sm text-[#666666]">Day 1</div>
               </div>
-              <Calendar className="h-5 w-5 text-[#FF6B35]" />
+              <Calendar className="h-5 w-5 text-[#60166b]" />
             </div>
           </CardContent>
         </Card>
@@ -347,7 +347,7 @@ export default function DashboardPage() {
         <CardContent className="space-y-4">
           {isLoading ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-[#FF6B35]" />
+              <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
             </div>
           ) : filteredSessions.length === 0 ? (
             <div className="text-center py-8 text-[#666666]">

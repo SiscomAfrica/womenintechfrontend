@@ -108,7 +108,7 @@ export function UserCard({
                   className={cn(
                     "text-caption font-medium px-2 py-1",
                     matchPercentage >= 80 ? "bg-success-green text-white" :
-                    matchPercentage >= 60 ? "bg-primary-orange text-white" :
+                    matchPercentage >= 60 ? "bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 text-white" :
                     "bg-bg-tertiary text-text-secondary"
                   )}
                 >

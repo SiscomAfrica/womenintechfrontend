@@ -47,7 +47,7 @@ export default function PartnersPage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <Building2 className="h-10 w-10 md:h-12 md:w-12 text-[#FF6B35]" />
+            <Building2 className="h-10 w-10 md:h-12 md:w-12 text-[#60166b]" />
           </div>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-4">
             Our Partners
@@ -66,7 +66,7 @@ export default function PartnersPage() {
             {priorityPartners.map((partner) => (
               <div
                 key={partner.name}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 flex items-center justify-center border-2 border-[#FF6B35]/10 hover:border-[#FF6B35]/30 group"
+                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 flex items-center justify-center border-2 border-[#60166b]/10 hover:border-[#60166b]/30 group"
               >
                 <div className="w-full h-32 flex items-center justify-center">
                   <img
@@ -97,7 +97,7 @@ export default function PartnersPage() {
             {otherPartners.map((partner) => (
               <div
                 key={partner.name}
-                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 flex items-center justify-center border border-gray-200 hover:border-[#FF6B35]/30 group"
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 flex items-center justify-center border border-gray-200 hover:border-[#60166b]/30 group"
               >
                 <div className="w-full h-20 flex items-center justify-center">
                   <img
@@ -123,7 +123,7 @@ export default function PartnersPage() {
         <div className="mt-16 text-center">
           <p className="text-sm text-[#666666]">
             Interested in partnering with us?{" "}
-            <a href="https://afrinovationfestival.com/our-patners/" target="_blank" rel="noopener noreferrer" className="text-[#FF6B35] hover:underline font-medium">
+            <a href="https://afrinovationfestival.com/our-patners/" target="_blank" rel="noopener noreferrer" className="text-[#60166b] hover:underline font-medium">
               Get in touch
             </a>
           </p>

@@ -50,8 +50,8 @@ export function Header() {
           {/* Logo - Clickable to go to dashboard */}
           <Link style={{width: "200px", height: "250px"}} to="/dashboard" className="flex items-center gap-2 !w-[150px]">
             <img 
-              src="/assets/images/afriinovation512.png" 
-              alt="Afriinovation Logo" 
+              src="/assets/images/main.png" 
+              alt="WomenInTech Logo" 
               className="w-[50%] h-8 md:w-full md:h-[50%] rounded-lg flex-shrink-0"
             />
           
@@ -64,7 +64,7 @@ export function Header() {
             to="/dashboard"
             className={({ isActive }) =>
               `font-medium transition-colors ${
-                isActive ? 'text-[#FF6B35]' : 'text-[#333333] hover:text-[#FF6B35]'
+                isActive ? 'text-[#60166b]' : 'text-[#333333] hover:text-[#60166b]'
               }`
             }
           >
@@ -74,7 +74,7 @@ export function Header() {
             to="/schedule"
             className={({ isActive }) =>
               `font-medium transition-colors ${
-                isActive ? 'text-[#FF6B35]' : 'text-[#333333] hover:text-[#FF6B35]'
+                isActive ? 'text-[#60166b]' : 'text-[#333333] hover:text-[#60166b]'
               }`
             }
           >
@@ -84,7 +84,7 @@ export function Header() {
             to="/networking"
             className={({ isActive }) =>
               `font-medium transition-colors ${
-                isActive ? 'text-[#FF6B35]' : 'text-[#333333] hover:text-[#FF6B35]'
+                isActive ? 'text-[#60166b]' : 'text-[#333333] hover:text-[#60166b]'
               }`
             }
           >
@@ -94,7 +94,7 @@ export function Header() {
             to="/polls"
             className={({ isActive }) =>
               `font-medium transition-colors ${
-                isActive ? 'text-[#FF6B35]' : 'text-[#333333] hover:text-[#FF6B35]'
+                isActive ? 'text-[#60166b]' : 'text-[#333333] hover:text-[#60166b]'
               }`
             }
           >
@@ -120,7 +120,7 @@ export function Header() {
               aria-expanded={showUserMenu}
               aria-haspopup="true"
             >
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#FF6B35] rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-semibold text-xs sm:text-sm">
                   {user?.profile?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
                 </span>
@@ -150,7 +150,7 @@ export function Header() {
                 aria-orientation="vertical"
                 aria-label="User menu"
               >
-                <div className="px-4 py-3 border-b border-[#E5E7EB] bg-gradient-to-br from-[#FFF8F5] to-white">
+                <div className="px-4 py-3 border-b border-[#E5E7EB] bg-gradient-to-br from-purple-50 to-white">
                   <p className="font-semibold text-[#1A1A1A] truncate text-sm md:text-base">
                     {user?.profile?.name || user?.email?.split('@')[0]}
                   </p>
@@ -166,8 +166,8 @@ export function Header() {
                     className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-[#F8F9FA] active:bg-[#F0F0F0] text-sm md:text-base text-[#333333] transition-all duration-150"
                     role="menuitem"
                   >
-                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#FFF8F5]">
-                      <User className="h-4 w-4 md:h-5 md:w-5 text-[#FF6B35] flex-shrink-0" />
+                    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-purple-50">
+                      <User className="h-4 w-4 md:h-5 md:w-5 text-[#60166b] flex-shrink-0" />
                     </div>
                     <span className="font-medium">Profile</span>
                   </Link>

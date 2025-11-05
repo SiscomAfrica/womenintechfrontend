@@ -162,7 +162,7 @@ export default function LoginPage() {
       <div className="flex min-h-screen items-center justify-center p-4 bg-bg-tertiary">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-primary-orange rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <MailIcon className="h-8 w-8 text-white" />
             </div>
             <CardTitle className="text-heading-lg text-text-primary">Check Your Email</CardTitle>
@@ -201,7 +201,7 @@ export default function LoginPage() {
                 <button
                   onClick={handleResendCode}
                   disabled={resendCooldown > 0 || sendMagicLinkMutation.isPending}
-                  className="text-[#FF6B35] font-semibold hover:underline hover:text-[#FF6B35]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="text-[#60166b] font-semibold hover:underline hover:text-[#60166b]/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   {resendCooldown > 0 
                     ? `Resend in ${resendCooldown}s` 
@@ -233,7 +233,7 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <div className="w-20 h-20 mx-auto mb-4">
             <img 
-              src="/assets/images/afriinovation512.png" 
+              src="/assets/images/main.png" 
               alt="Afriinovation Logo" 
               className="w-full h-full object-contain"
             />

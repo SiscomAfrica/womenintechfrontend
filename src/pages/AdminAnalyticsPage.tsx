@@ -274,7 +274,7 @@ Connection Acceptance Rate,${displayAnalytics.networking_analytics.acceptance_ra
             ]}
             xKey="name"
             yKeys={['active', 'total']}
-            colors={['#FF6B35', '#007AFF']}
+            colors={['#60166b', '#8b5cf6']}
           />
         </Card>
 

@@ -98,7 +98,7 @@ const AdminAnnouncementsPage: React.FC = () => {
           
           <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
             <DialogTrigger asChild>
-              <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
+              <Button size="sm" className="bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 hover:from-purple-800/90 hover:via-indigo-800/85 hover:to-pink-800/90">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Announcement
               </Button>
@@ -189,7 +189,7 @@ const AdminAnnouncementsPage: React.FC = () => {
               </p>
               <Button 
                 onClick={() => setShowCreateDialog(true)}
-                className="bg-orange-600 hover:bg-orange-700"
+                className="bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 hover:from-purple-800/90 hover:via-indigo-800/85 hover:to-pink-800/90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Announcement

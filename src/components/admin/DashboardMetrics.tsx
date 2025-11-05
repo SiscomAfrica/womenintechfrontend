@@ -87,8 +87,8 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ data, isLoading }) 
       title: 'Active Polls',
       value: data.polls.active,
       icon: BarChart3,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-purple-700',
+      bgColor: 'bg-purple-50',
       description: `${data.polls.total} total polls`
     }
   ]
@@ -118,7 +118,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ data, isLoading }) 
       {/* Real-time Status Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
         <div className="flex items-center gap-2">
-          <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
+          <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-purple-700" />
           <h2 className="text-base sm:text-lg font-semibold text-gray-900">Live Dashboard</h2>
         </div>
         <RealTimeIndicator 
@@ -206,7 +206,7 @@ const DashboardMetrics: React.FC<DashboardMetricsProps> = ({ data, isLoading }) 
         {/* Poll Engagement */}
         <Card className="p-4 sm:p-6">
           <div className="flex items-center mb-4">
-            <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mr-2" />
+            <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-purple-700 mr-2" />
             <h3 className="text-base sm:text-lg font-semibold text-gray-900">Poll Engagement</h3>
           </div>
           <div className="h-48 sm:h-64">

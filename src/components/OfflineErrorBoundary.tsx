@@ -65,7 +65,7 @@ export class OfflineErrorBoundary extends Component<Props, State> {
             </p>
             <button
               onClick={this.handleRetry}
-              className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg hover:bg-[#FF6B35]/90"
+              className="px-4 py-2 bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 text-white rounded-lg hover:from-purple-800/90 hover:via-indigo-800/85 hover:to-pink-800/90"
             >
               Try Again
             </button>

@@ -55,7 +55,7 @@ export const OfflineFallback = ({ onRetry, onGoHome }: OfflineFallbackProps) => 
           <div className="flex gap-2">
             <Button 
               onClick={handleRefresh}
-              className="flex-1 bg-[#FF6B35] hover:bg-[#FF6B35]/90"
+              className="flex-1 bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 hover:from-purple-800/90 hover:via-indigo-800/85 hover:to-pink-800/90"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try Again

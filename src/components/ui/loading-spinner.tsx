@@ -24,9 +24,9 @@ export function LoadingSpinner({
     return (
       <div className={cn('flex items-center gap-2', className)}>
         <div className="flex items-center gap-1">
-          <div className="w-2 h-2 bg-[#FF6B35] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-          <div className="w-2 h-2 bg-[#FF6B35] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-          <div className="w-2 h-2 bg-[#FF6B35] rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-[#60166b] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-2 h-2 bg-[#60166b] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-2 h-2 bg-[#60166b] rounded-full animate-bounce"></div>
         </div>
         {message && <span className="text-sm text-gray-600 ml-2">{message}</span>}
       </div>
@@ -36,7 +36,7 @@ export function LoadingSpinner({
   if (variant === 'pulse') {
     return (
       <div className={cn('flex items-center gap-2', className)}>
-        <div className={cn('bg-[#FF6B35] rounded-full animate-pulse', sizeClasses[size])}></div>
+        <div className={cn('bg-[#60166b] rounded-full animate-pulse', sizeClasses[size])}></div>
         {message && <span className="text-sm text-gray-600">{message}</span>}
       </div>
     )
@@ -44,7 +44,7 @@ export function LoadingSpinner({
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <Loader2 className={cn('animate-spin text-[#FF6B35]', sizeClasses[size])} />
+      <Loader2 className={cn('animate-spin text-[#60166b]', sizeClasses[size])} />
       {message && <span className="text-sm text-gray-600">{message}</span>}
     </div>
   )

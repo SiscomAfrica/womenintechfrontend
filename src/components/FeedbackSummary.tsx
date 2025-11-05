@@ -14,7 +14,7 @@ interface FeedbackSummaryProps {
   className?: string
 }
 
-const COLORS = ['#FF6B35', '#007AFF', '#4CAF50', '#F38181', '#4ECDC4', '#95E1D3', '#A8E6CF']
+const COLORS = ['#60166b', '#8b5cf6', '#a78bfa', '#c084fc', '#d8b4fe', '#e9d5ff', '#f3e8ff']
 
 export function FeedbackSummary({
   sessionId,
@@ -56,7 +56,7 @@ export function FeedbackSummary({
     return (
       <Card className={cn("", className)}>
         <CardContent className="text-center py-8">
-          <AlertCircle className="h-12 w-12 text-[#FF6B35] mx-auto mb-4" />
+          <AlertCircle className="h-12 w-12 text-[#60166b] mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-[#1A1A1A] mb-2">
             Failed to load feedback summary
           </h3>
@@ -319,7 +319,7 @@ export function FeedbackSummary({
         {summary.question_summaries.map((questionSummary, index) => (
           <div key={questionSummary.question_id} className="space-y-3">
             <div className="flex items-start gap-2">
-              <span className="text-sm font-semibold text-[#FF6B35] flex-shrink-0">
+              <span className="text-sm font-semibold text-[#60166b] flex-shrink-0">
                 {index + 1}.
               </span>
               <div className="flex-1">

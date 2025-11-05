@@ -106,7 +106,7 @@ export default function SchedulePage() {
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs px-2 py-1 rounded-full font-medium bg-orange-50 text-orange-600">
+              <span className="text-xs px-2 py-1 rounded-full font-medium bg-purple-50 text-purple-700">
                 Day {session.day}
               </span>
               <span className="text-xs text-gray-600">
@@ -199,12 +199,12 @@ export default function SchedulePage() {
               <CardContent className="p-3 sm:p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-2xl font-bold text-orange-500">
+                    <div className="text-2xl font-bold text-[#60166b]">
                       {day1Sessions.length}
                     </div>
                     <div className="text-sm text-gray-600">Day 1</div>
                   </div>
-                  <Calendar className="h-5 w-5 text-orange-500" />
+                  <Calendar className="h-5 w-5 text-[#60166b]" />
                 </div>
               </CardContent>
             </Card>
@@ -229,7 +229,7 @@ export default function SchedulePage() {
       <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
         {isLoading ? (
           <div className="flex justify-center py-8 sm:py-12">
-            <Loader2 className="h-7 w-7 sm:h-8 sm:w-8 animate-spin text-orange-500" />
+            <Loader2 className="h-7 w-7 sm:h-8 sm:w-8 animate-spin text-[#60166b]" />
           </div>
         ) : filteredSessions.length === 0 ? (
           <div className="text-center py-8 sm:py-12 px-4">
@@ -277,8 +277,8 @@ export default function SchedulePage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <div className="flex items-center gap-3 mb-2">
-              <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
-                <AlertTriangle className="h-6 w-6 text-orange-600" />
+              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
+                <AlertTriangle className="h-6 w-6 text-purple-700" />
               </div>
               <DialogTitle className="text-xl">Leave Session?</DialogTitle>
             </div>

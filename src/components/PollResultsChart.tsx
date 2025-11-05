@@ -11,7 +11,7 @@ interface PollResultsChartProps {
   className?: string
 }
 
-const COLORS = ['#FF6B35', '#007AFF', '#4CAF50', '#F38181', '#4ECDC4', '#95E1D3', '#A8E6CF']
+const COLORS = ['#60166b', '#8b5cf6', '#a78bfa', '#c084fc', '#d8b4fe', '#e9d5ff', '#f3e8ff']
 
 export function PollResultsChart({ questionResult, className }: PollResultsChartProps) {
   const renderChoiceResults = () => {
@@ -111,7 +111,7 @@ export function PollResultsChart({ questionResult, className }: PollResultsChart
           </div>
           
           {chartData.length > 0 && (
-            <Badge className="bg-[#FF6B35]/10 text-[#FF6B35] text-xs">
+            <Badge className="bg-[#60166b]/10 text-[#60166b] text-xs">
               Winner: {chartData[0].name}
             </Badge>
           )}
@@ -143,7 +143,7 @@ export function PollResultsChart({ questionResult, className }: PollResultsChart
                   className={cn(
                     "h-6 w-6",
                     star <= Math.round(averageRating)
-                      ? "text-[#FF6B35] fill-current"
+                      ? "text-[#60166b] fill-current"
                       : "text-[#E0E0E0]"
                   )}
                 />
@@ -219,7 +219,7 @@ export function PollResultsChart({ questionResult, className }: PollResultsChart
             
             {responses.length > 10 && (
               <div className="text-center">
-                <Badge className="bg-[#FF6B35]/10 text-[#FF6B35] text-xs">
+                <Badge className="bg-[#60166b]/10 text-[#60166b] text-xs">
                   +{responses.length - 10} more responses
                 </Badge>
               </div>

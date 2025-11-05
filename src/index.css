@@ -104,8 +104,8 @@ body {
   --popover: #FFFFFF; /* --bg-primary */
   --popover-foreground: #1A1A1A; /* --text-primary */
   
-  /* Primary orange from RN app (#FF6B35) */
-  --primary: #FF6B35; /* --primary-orange */
+  /* Primary purple from new color scheme (#60166b) */
+  --primary: #60166b; /* --primary-purple */
   --primary-foreground: #FFFFFF;
   
   /* Secondary blue from RN app (#007AFF) */
@@ -127,24 +127,24 @@ body {
   /* Border colors from RN app */
   --border: #E0E0E0; /* --border-dark */
   --input: #F9F9F9; /* --bg-input */
-  --ring: #FF6B35; /* Focus ring using primary orange */
+  --ring: #60166b; /* Focus ring using primary purple */
   
-  /* Chart colors using session type colors from RN app */
-  --chart-1: #FF6B35; /* Keynote - primary orange */
-  --chart-2: #4ECDC4; /* Workshop */
-  --chart-3: #95E1D3; /* Networking */
-  --chart-4: #F38181; /* Panel */
-  --chart-5: #A8E6CF; /* Break */
+  /* Chart colors using new purple gradient theme */
+  --chart-1: #60166b; /* Keynote - primary purple */
+  --chart-2: #8b5cf6; /* Workshop - violet */
+  --chart-3: #a78bfa; /* Networking - violet-400 */
+  --chart-4: #c084fc; /* Panel - purple-400 */
+  --chart-5: #d8b4fe; /* Break - purple-300 */
   
   /* Sidebar colors */
   --sidebar: #FFFFFF;
   --sidebar-foreground: #1A1A1A;
-  --sidebar-primary: #FF6B35;
+  --sidebar-primary: #60166b;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #F8F9FA;
   --sidebar-accent-foreground: #333333;
   --sidebar-border: #E8E8E8; /* --border-medium */
-  --sidebar-ring: #FF6B35;
+  --sidebar-ring: #60166b;
 }
 
 .dark {
@@ -237,12 +237,21 @@ body {
   
   /* Fix any potential contrast issues */
   .bg-primary-orange {
-    background-color: #FF6B35 !important;
+    background: linear-gradient(to bottom right, #701a75 0%, #312e81 50%, #831843 100%) !important;
     color: white !important;
   }
   
   .text-primary-orange {
-    color: #FF6B35 !important;
+    color: #60166b !important;
+  }
+  
+  .bg-primary-purple {
+    background-color: #60166b !important;
+    color: white !important;
+  }
+  
+  .text-primary-purple {
+    color: #60166b !important;
   }
   
   .bg-primary-blue {

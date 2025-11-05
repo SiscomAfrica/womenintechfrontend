@@ -59,7 +59,7 @@ export function SessionsList({
         <Button 
           onClick={() => refetch()} 
           disabled={isRefetching}
-          className="bg-[#FF6B35] hover:bg-[#FF6B35]/90"
+          className="bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 hover:from-purple-800/90 hover:via-indigo-800/85 hover:to-pink-800/90"
         >
           {isRefetching ? (
             <>

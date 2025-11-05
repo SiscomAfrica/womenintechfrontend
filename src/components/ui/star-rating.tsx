@@ -68,15 +68,15 @@ export function StarRating({
               onMouseLeave={handleMouseLeave}
               disabled={disabled}
               className={cn(
-                'transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/50 rounded',
+                'transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#60166b]/50 rounded',
                 disabled ? 'cursor-default' : 'cursor-pointer hover:scale-110',
                 isActive
                   ? disabled
                     ? 'text-[#E0E0E0]'
                     : hoverValue !== null
-                    ? 'text-[#FF6B35]'
-                    : 'text-[#FF6B35]'
-                  : 'text-[#E0E0E0] hover:text-[#FF6B35]/50'
+                    ? 'text-[#60166b]'
+                    : 'text-[#60166b]'
+                  : 'text-[#E0E0E0] hover:text-[#60166b]/50'
               )}
             >
               <Star 

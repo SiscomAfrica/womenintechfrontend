@@ -42,8 +42,8 @@ const DataExport: React.FC = () => {
       title: 'Poll Results',
       description: 'Export poll questions, responses, and analytics',
       icon: BarChart3,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-purple-700',
+      bgColor: 'bg-purple-50',
       endpoint: '/admin/polls/export',
       filename: 'poll_results.csv'
     },

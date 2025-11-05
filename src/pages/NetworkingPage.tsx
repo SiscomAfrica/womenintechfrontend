@@ -112,7 +112,7 @@ export default function NetworkingPage() {
               className={`
                 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0
                 ${selectedFilter === 'all' 
-                  ? 'bg-orange-500 text-white shadow-sm' 
+                  ? 'bg-[#60166b] text-white shadow-sm' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }
               `}
@@ -134,7 +134,7 @@ export default function NetworkingPage() {
               className={`
                 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0
                 ${selectedFilter === 'matched' 
-                  ? 'bg-orange-500 text-white shadow-sm' 
+                  ? 'bg-[#60166b] text-white shadow-sm' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }
               `}
@@ -213,7 +213,7 @@ export default function NetworkingPage() {
                 >
                   {isFetchingNextPage ? (
                     <>
-                      <div className="h-4 w-4 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin mr-2" />
+                      <div className="h-4 w-4 border-2 border-purple-500/30 border-t-purple-700 rounded-full animate-spin mr-2" />
                       Loading more...
                     </>
                   ) : (

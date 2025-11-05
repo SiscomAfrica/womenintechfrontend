@@ -18,8 +18,14 @@ export default {
     },
     extend: {
       colors: {
-        // RN app color palette
-        'primary-orange': '#FF6B35',
+        // Updated purple/indigo/pink color palette
+        'primary-purple': '#60166b',
+        'primary-purple-light': '#8b2d96',
+        'primary-indigo': '#4c1d95',
+        'primary-pink': '#9d174d',
+        'gradient-purple': '#701a75', // purple-900
+        'gradient-indigo': '#312e81', // indigo-900
+        'gradient-pink': '#831843', // pink-900
         'primary-blue': '#007AFF',
         'success-green': '#4CAF50',
         'success-green-alt': '#34C759',
@@ -36,12 +42,12 @@ export default {
         'border-medium': '#E8E8E8',
         'border-dark': '#E0E0E0',
         
-        // Session type colors
-        'session-keynote': '#FF6B35',
-        'session-workshop': '#4ECDC4',
-        'session-networking': '#95E1D3',
-        'session-panel': '#F38181',
-        'session-break': '#A8E6CF',
+        // Session type colors with purple theme
+        'session-keynote': '#60166b',
+        'session-workshop': '#8b5cf6', // violet
+        'session-networking': '#a78bfa', // violet-400
+        'session-panel': '#c084fc', // purple-400
+        'session-break': '#d8b4fe', // purple-300
         
         // Shadcn UI colors
         border: "hsl(var(--border))",

@@ -89,8 +89,8 @@ export function CodeInput({
             "border-2 border-border-dark rounded-app-md bg-bg-input",
             "text-text-primary placeholder:text-text-placeholder",
             "transition-all duration-200 outline-none",
-            "focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/20 focus:bg-bg-primary",
-            value[index] && "border-primary-orange bg-bg-primary",
+            "focus:border-primary-purple focus:ring-2 focus:ring-primary-purple/20 focus:bg-bg-primary",
+            value[index] && "border-primary-purple bg-bg-primary",
             disabled && "opacity-50 cursor-not-allowed"
           )}
           onFocus={(e) => e.target.select()}

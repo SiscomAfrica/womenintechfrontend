@@ -30,7 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "text-text-primary placeholder:text-text-placeholder",
             "transition-all duration-200 outline-none",
             
-            "focus:border-primary-orange focus:ring-2 focus:ring-primary-orange/20",
+            "focus:border-primary-purple focus:ring-2 focus:ring-primary-purple/20",
             
             error && "border-red-500 focus:border-red-500 focus:ring-red-500/20",
             

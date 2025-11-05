@@ -214,7 +214,7 @@ export default function ProfileSetupPage() {
                       px-4 py-2 rounded-full text-sm font-medium transition-colors
                       ${
                         selectedInterests.includes(interest)
-                          ? 'bg-primary-orange text-white'
+                          ? 'bg-gradient-to-br from-purple-900/85 via-indigo-900/80 to-pink-900/85 text-white'
                           : 'bg-bg-secondary text-text-secondary hover:bg-bg-tertiary'
                       }
                     `}

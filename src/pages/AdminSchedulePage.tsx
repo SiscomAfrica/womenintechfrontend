@@ -166,7 +166,7 @@ const AdminSchedulePage: React.FC = () => {
         <div
           className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
             dragActive 
-              ? 'border-orange-500 bg-orange-50' 
+              ? 'border-#60166b/100 bg-#60166b/10' 
               : 'border-gray-300 hover:border-gray-400'
           }`}
           onDragEnter={handleDrag}
@@ -189,7 +189,7 @@ const AdminSchedulePage: React.FC = () => {
                 <Button
                   onClick={handleUpload}
                   disabled={uploading}
-                  className="bg-orange-600 hover:bg-orange-700"
+                  className="bg-#60166b hover:bg-#4d1157"
                 >
                   {uploading ? 'Uploading...' : 'Upload Schedule'}
                 </Button>
@@ -307,10 +307,10 @@ const AdminSchedulePage: React.FC = () => {
             <p className="text-sm text-purple-700">Locations</p>
           </div>
           
-          <div className="text-center p-4 bg-orange-50 rounded-lg">
-            <Users className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-orange-900">1,250</p>
-            <p className="text-sm text-orange-700">Total Capacity</p>
+          <div className="text-center p-4 bg-#60166b/10 rounded-lg">
+            <Users className="w-8 h-8 text-#60166b mx-auto mb-2" />
+            <p className="text-2xl font-bold text-#4d1157">1,250</p>
+            <p className="text-sm text-#4d1157">Total Capacity</p>
           </div>
         </div>
 
@@ -318,7 +318,7 @@ const AdminSchedulePage: React.FC = () => {
         <div>
           <h4 className="font-medium text-gray-900 mb-3">Session Types</h4>
           <div className="flex flex-wrap gap-2">
-            <Badge className="bg-orange-100 text-orange-800">Keynote (5)</Badge>
+            <Badge className="bg-#60166b/20 text-#60166b">Keynote (5)</Badge>
             <Badge className="bg-blue-100 text-blue-800">Workshop (25)</Badge>
             <Badge className="bg-green-100 text-green-800">Panel (15)</Badge>
             <Badge className="bg-purple-100 text-purple-800">Networking (8)</Badge>

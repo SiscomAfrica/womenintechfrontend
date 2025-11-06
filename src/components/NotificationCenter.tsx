@@ -1,20 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Bell, X, Check, Clock, Users, Calendar, Megaphone, Settings } from 'lucide-react'
+import { Bell, X, Check, Clock, Users, Calendar, Megaphone, Settings, AlertCircle, Info, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useNotificationStore, type Notification } from '@/stores/notification-store'
+import { useUserNotifications, useUnreadNotificationsCount } from '@/hooks/useUserNotifications'
+import { notificationService, type BackendNotification } from '@/services/notifications'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { cn } from '@/lib/utils'
 
-const getNotificationIcon = (type: Notification['type']) => {
+const getNotificationIcon = (type: string) => {
   switch (type) {
+    case 'urgent':
+      return <AlertCircle className="h-4 w-4 text-red-600" />
+    case 'warning':
+      return <AlertTriangle className="h-4 w-4 text-yellow-600" />
+    case 'info':
+      return <Info className="h-4 w-4 text-blue-600" />
     case 'poll':
-      return <Clock className="h-4 w-4 text-[#FF6B35]" />
+      return <Clock className="h-4 w-4 text-[#60166b]" />
     case 'connection_request':
       return <Users className="h-4 w-4 text-[#007AFF]" />
     case 'schedule_change':
       return <Calendar className="h-4 w-4 text-[#4CAF50]" />
     case 'announcement':
-      return <Megaphone className="h-4 w-4 text-[#FF6B35]" />
+      return <Megaphone className="h-4 w-4 text-[#60166b]" />
     case 'system':
       return <Settings className="h-4 w-4 text-[#666666]" />
     default:
@@ -22,9 +31,10 @@ const getNotificationIcon = (type: Notification['type']) => {
   }
 }
 
-const formatTimestamp = (timestamp: number): string => {
+const formatTimestamp = (timestamp: string | number): string => {
+  const date = typeof timestamp === 'string' ? new Date(timestamp) : new Date(timestamp)
   const now = Date.now()
-  const diff = now - timestamp
+  const diff = now - date.getTime()
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
@@ -34,7 +44,59 @@ const formatTimestamp = (timestamp: number): string => {
   if (hours < 24) return `${hours}h ago`
   if (days < 7) return `${days}d ago`
   
-  return new Date(timestamp).toLocaleDateString()
+  return date.toLocaleDateString()
+}
+
+interface BackendNotificationItemProps {
+  notification: BackendNotification
+  onMarkAsRead: (id: string) => void
+}
+
+const BackendNotificationItem: React.FC<BackendNotificationItemProps> = ({
+  notification,
+  onMarkAsRead,
+}) => {
+  const handleMarkAsRead = () => {
+    if (!notification.isRead) {
+      onMarkAsRead(notification.id)
+    }
+  }
+
+  return (
+    <div
+      onClick={handleMarkAsRead}
+      className={cn(
+        'p-3 sm:p-4 border-b border-[#E0E0E0] hover:bg-[#F5F5F5] cursor-pointer transition-all duration-150',
+        !notification.isRead && 'bg-purple-50/50'
+      )}
+    >
+      <div className="flex gap-3">
+        <div className="flex-shrink-0 mt-1">
+          {getNotificationIcon(notification.type)}
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <h4 className="text-sm font-semibold text-[#1A1A1A] mb-1 truncate">
+                {notification.title}
+              </h4>
+              <p className="text-xs sm:text-sm text-[#666666] leading-relaxed line-clamp-2">
+                {notification.message}
+              </p>
+              <p className="text-xs text-[#999999] mt-2">
+                {formatTimestamp(notification.createdAt)}
+              </p>
+            </div>
+            {!notification.isRead && (
+              <div className="flex-shrink-0">
+                <div className="h-2 w-2 bg-[#60166b] rounded-full"></div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 interface NotificationItemProps {
@@ -134,17 +196,53 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
 export const NotificationCenter: React.FC = () => {
   const {
-    notifications,
-    unreadCount,
-    markAsRead,
-    markAllAsRead,
+    notifications: localNotifications,
+    unreadCount: localUnreadCount,
+    markAsRead: markLocalAsRead,
+    markAllAsRead: markAllLocalAsRead,
     removeNotification,
   } = useNotificationStore()
 
   const [showNotifications, setShowNotifications] = useState(false)
   const notificationRef = useRef<HTMLDivElement>(null)
+  const queryClient = useQueryClient()
 
-  const recentNotifications = notifications.slice(0, 10)
+  // Fetch backend notifications
+  const { data: backendNotifications, isLoading } = useUserNotifications(1, 10)
+  const { data: backendUnreadCount = 0 } = useUnreadNotificationsCount()
+
+  // Mutation to mark as read
+  const markAsReadMutation = useMutation({
+    mutationFn: (notificationId: string) => notificationService.markAsRead(notificationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-notifications'] })
+      queryClient.invalidateQueries({ queryKey: ['unread-notifications-count'] })
+    },
+  })
+
+  // Mutation to mark all as read
+  const markAllAsReadMutation = useMutation({
+    mutationFn: () => notificationService.markAllAsRead(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user-notifications'] })
+      queryClient.invalidateQueries({ queryKey: ['unread-notifications-count'] })
+    },
+  })
+
+  const handleMarkAsRead = (id: string) => {
+    markAsReadMutation.mutate(id)
+  }
+
+  const handleMarkAllAsRead = () => {
+    // Mark all backend notifications as read
+    markAllAsReadMutation.mutate()
+    // Mark all local notifications as read
+    markAllLocalAsRead()
+  }
+
+  // Combine unread counts from backend and local
+  const totalUnreadCount = backendUnreadCount + localUnreadCount
+  const recentLocalNotifications = localNotifications.slice(0, 5)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -182,16 +280,16 @@ export const NotificationCenter: React.FC = () => {
           setShowNotifications(!showNotifications)
         }}
         className="relative h-9 w-9 p-0 hover:bg-[#F5F5F5] rounded-lg transition-colors flex items-center justify-center"
-        aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}
+        aria-label={`Notifications ${totalUnreadCount > 0 ? `(${totalUnreadCount} unread)` : ''}`}
         aria-expanded={showNotifications}
         aria-haspopup="true"
       >
         <Bell className="h-5 w-5 text-[#666666]" />
-        {unreadCount > 0 && (
+        {totalUnreadCount > 0 && (
           <Badge
             className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-red-500 text-white hover:bg-red-600 border-2 border-white"
           >
-            {unreadCount > 99 ? '99+' : unreadCount}
+            {totalUnreadCount > 99 ? '99+' : totalUnreadCount}
           </Badge>
         )}
       </button>
@@ -218,19 +316,20 @@ export const NotificationCenter: React.FC = () => {
         <div className="border-b border-[#E5E7EB] p-4 bg-gradient-to-br from-[#F8F9FA] to-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-[#FFF8F5] rounded-lg flex items-center justify-center">
-                <Bell className="h-4 w-4 text-[#FF6B35]" />
+              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                <Bell className="h-4 w-4 text-[#60166b]" />
               </div>
               <h3 className="text-base md:text-lg font-semibold text-[#1A1A1A]">
                 Notifications
               </h3>
             </div>
-            {unreadCount > 0 && (
+            {totalUnreadCount > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs text-[#FF6B35] hover:text-[#E55A2B] hover:bg-[#FFF8F5] h-7 px-2 rounded-lg transition-all duration-150"
-                onClick={markAllAsRead}
+                className="text-xs text-[#60166b] hover:text-[#4d1157] hover:bg-purple-50 h-7 px-2 rounded-lg transition-all duration-150"
+                onClick={handleMarkAllAsRead}
+                disabled={markAllAsReadMutation.isPending}
               >
                 <Check className="h-3 w-3 mr-1" />
                 <span className="hidden sm:inline">Mark all read</span>
@@ -239,15 +338,20 @@ export const NotificationCenter: React.FC = () => {
             )}
           </div>
           
-          {unreadCount > 0 && (
+          {totalUnreadCount > 0 && (
             <p className="text-xs sm:text-sm text-[#666666] mt-2">
-              {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
+              {totalUnreadCount} unread notification{totalUnreadCount !== 1 ? 's' : ''}
             </p>
           )}
         </div>
         
         <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-          {recentNotifications.length === 0 ? (
+          {isLoading ? (
+            <div className="p-8 text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#60166b] mx-auto"></div>
+              <p className="text-sm text-gray-500 mt-2">Loading notifications...</p>
+            </div>
+          ) : (!backendNotifications?.items || backendNotifications.items.length === 0) && recentLocalNotifications.length === 0 ? (
             <div className="p-8 sm:p-12 text-center">
               <div className="w-16 h-16 bg-[#F8F9FA] rounded-full flex items-center justify-center mx-auto mb-4">
                 <Bell className="h-8 w-8 text-[#CCCCCC]" />
@@ -259,11 +363,21 @@ export const NotificationCenter: React.FC = () => {
             </div>
           ) : (
             <div>
-              {recentNotifications.map((notification) => (
+              {/* Backend Notifications */}
+              {backendNotifications?.items && backendNotifications.items.map((notification) => (
+                <BackendNotificationItem
+                  key={notification.id}
+                  notification={notification}
+                  onMarkAsRead={handleMarkAsRead}
+                />
+              ))}
+              
+              {/* Local Notifications */}
+              {recentLocalNotifications.map((notification) => (
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
-                  onMarkAsRead={markAsRead}
+                  onMarkAsRead={markLocalAsRead}
                   onRemove={removeNotification}
                 />
               ))}
@@ -271,14 +385,14 @@ export const NotificationCenter: React.FC = () => {
           )}
         </div>
         
-        {notifications.length > 10 && (
+        {backendNotifications && backendNotifications.total > 10 && (
           <div className="border-t border-[#E5E7EB] p-3 bg-[#F8F9FA]">
             <Button
               variant="ghost"
               size="sm"
-              className="w-full text-xs sm:text-sm font-medium text-[#FF6B35] hover:text-[#E55A2B] hover:bg-[#FFF8F5] rounded-lg transition-all duration-150"
+              className="w-full text-xs sm:text-sm font-medium text-[#60166b] hover:text-[#4d1157] hover:bg-purple-50 rounded-lg transition-all duration-150"
             >
-              View all {notifications.length} notifications
+              View all {backendNotifications.total} notifications
             </Button>
           </div>
         )}

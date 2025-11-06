@@ -240,18 +240,18 @@ const AdminPollsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Zap className="w-6 h-6 text-orange-600" />
-            <h1 className="text-3xl font-bold tracking-tight">Poll Management</h1>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+            <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-#60166b flex-shrink-0" />
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight truncate">Poll Management</h1>
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Create and manage polls for sessions, view results and control poll status
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 justify-end sm:justify-start flex-shrink-0">
           <RealTimeIndicator 
             status={pollRealTime.status}
             onForceUpdate={pollRealTime.forceUpdate}
@@ -261,24 +261,23 @@ const AdminPollsPage: React.FC = () => {
       </div>
 
       <div className="flex justify-end">
-        <div>
-        </div>
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="w-full sm:w-auto">
               <Plus className="mr-2 h-4 w-4" />
-              Create Poll
+              <span className="hidden sm:inline">Create Poll</span>
+              <span className="sm:hidden">New Poll</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Create New Poll</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-base sm:text-lg">Create New Poll</DialogTitle>
+              <DialogDescription className="text-xs sm:text-sm">
                 Create a new poll for a session with custom questions
               </DialogDescription>
             </DialogHeader>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="session">Session</Label>
                   <Select value={formData.session_id} onValueChange={(value) => setFormData(prev => ({ ...prev, session_id: value }))}>
@@ -490,7 +489,7 @@ const AdminPollsPage: React.FC = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid gap-3 sm:gap-4">
               {filteredPolls.map((poll) => (
                 <Card key={poll.id} className="relative">
                   {/* Live indicator for active polls */}
@@ -500,47 +499,53 @@ const AdminPollsPage: React.FC = () => {
                     </div>
                   )}
                   
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="flex items-center gap-2">
-                          {poll.title}
-                          <Badge variant={poll.is_active ? 'default' : 'secondary'}>
+                  <CardHeader className="p-3 sm:p-6">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-sm sm:text-base mb-1 sm:mb-2">
+                          <span className="break-words">{poll.title}</span>
+                          <Badge variant={poll.is_active ? 'default' : 'secondary'} className="text-xs">
                             {poll.is_active ? 'Active' : 'Inactive'}
                           </Badge>
                           {poll.is_active && (
-                            <span className="text-xs text-green-600 font-medium">LIVE</span>
+                            <span className="text-[10px] sm:text-xs text-green-600 font-medium">LIVE</span>
                           )}
                         </CardTitle>
-                        <CardDescription>
-                          Session: {poll.session_title || 'Unknown Session'} • 
-                          Created: {new Date(poll.created_at).toLocaleDateString()} •
-                          Responses: {poll.response_count || 0}
+                        <CardDescription className="text-xs sm:text-sm break-words">
+                          <span className="block sm:inline">Session: {poll.session_title || 'Unknown Session'}</span>
+                          <span className="hidden sm:inline"> • </span>
+                          <span className="block sm:inline">Created: {new Date(poll.created_at).toLocaleDateString()}</span>
+                          <span className="hidden sm:inline"> • </span>
+                          <span className="block sm:inline">Responses: {poll.response_count || 0}</span>
                         </CardDescription>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col xs:flex-row gap-2">
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => handleViewResults(poll)}
+                          className="w-full xs:w-auto text-xs sm:text-sm h-8"
                         >
-                          <Eye className="mr-2 h-4 w-4" />
+                          <Eye className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                           Results
                         </Button>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => handleTogglePollStatus(poll)}
+                          className="w-full xs:w-auto text-xs sm:text-sm h-8"
                         >
                           {poll.is_active ? (
                             <>
-                              <Pause className="mr-2 h-4 w-4" />
-                              Deactivate
+                              <Pause className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                              <span className="hidden sm:inline">Deactivate</span>
+                              <span className="sm:hidden">Pause</span>
                             </>
                           ) : (
                             <>
-                              <Play className="mr-2 h-4 w-4" />
-                              Activate
+                              <Play className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                              <span className="hidden sm:inline">Activate</span>
+                              <span className="sm:hidden">Start</span>
                             </>
                           )}
                         </Button>
@@ -548,15 +553,16 @@ const AdminPollsPage: React.FC = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => handleDeletePoll(poll.id)}
+                          className="w-full xs:w-auto text-xs sm:text-sm h-8"
                         >
-                          <Trash2 className="mr-2 h-4 w-4" />
+                          <Trash2 className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                           Delete
                         </Button>
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground">
+                  <CardContent className="p-3 sm:p-6 pt-0 sm:pt-0">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Questions: {poll.question_schema?.questions?.length || 0}
                     </div>
                   </CardContent>

@@ -147,7 +147,7 @@ export default function PollsPage() {
                 className={cn(
                   "px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0",
                   selectedFilter === tab.value
-                    ? "bg-orange-500 text-white shadow-sm"
+                    ? "bg-[#60166b] text-white shadow-sm"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 )}
               >

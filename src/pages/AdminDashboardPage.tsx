@@ -66,14 +66,17 @@ const AdminDashboardPage: React.FC = () => {
           <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
             <BarChart3 className="w-4 h-4 mr-2" />
             <span className="hidden sm:inline">Analytics</span>
+            <span className="sm:hidden">Stats</span>
           </Button>
           <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
             <Settings className="w-4 h-4 mr-2" />
             <span className="hidden sm:inline">Settings</span>
+            <span className="sm:hidden">Config</span>
           </Button>
-          <Button size="sm" className="bg-orange-600 hover:bg-orange-700 flex-1 sm:flex-none">
+          <Button size="sm" className="bg-[#60166b] hover:bg-[#4d1157] text-white flex-1 sm:flex-none">
             <Upload className="w-4 h-4 mr-2" />
             <span className="hidden sm:inline">Export Data</span>
+            <span className="sm:hidden">Export</span>
           </Button>
         </div>
       </div>
@@ -106,26 +109,26 @@ const AdminDashboardPage: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
-                  <UserPlus className="w-5 h-5 text-orange-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">Pre-Registration Stats</h3>
+                  <UserPlus className="w-5 h-5 text-[#60166b] mr-2" />
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">Pre-Registration Stats</h3>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <p className="text-sm font-medium text-blue-600">Pre-registered</p>
-                  <p className="text-xl font-bold text-blue-900">{userStats?.total_pre_registered || 0}</p>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                  <p className="text-xs sm:text-sm font-medium text-blue-600">Pre-registered</p>
+                  <p className="text-lg sm:text-xl font-bold text-blue-900">{userStats?.total_pre_registered || 0}</p>
                 </div>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <p className="text-sm font-medium text-green-600">Invitations Sent</p>
-                  <p className="text-xl font-bold text-green-900">{userStats?.invitations_sent || 0}</p>
+                <div className="bg-green-50 p-3 sm:p-4 rounded-lg">
+                  <p className="text-xs sm:text-sm font-medium text-green-600">Invitations Sent</p>
+                  <p className="text-lg sm:text-xl font-bold text-green-900">{userStats?.invitations_sent || 0}</p>
                 </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <p className="text-sm font-medium text-purple-600">App Downloads</p>
-                  <p className="text-xl font-bold text-purple-900">{userStats?.app_downloaded || 0}</p>
+                <div className="bg-purple-50 p-3 sm:p-4 rounded-lg">
+                  <p className="text-xs sm:text-sm font-medium text-purple-600">App Downloads</p>
+                  <p className="text-lg sm:text-xl font-bold text-purple-900">{userStats?.app_downloaded || 0}</p>
                 </div>
-                <div className="bg-orange-50 p-4 rounded-lg">
-                  <p className="text-sm font-medium text-orange-600">Conversion Rate</p>
-                  <p className="text-xl font-bold text-orange-900">{userStats?.conversion_rate?.toFixed(1) || '0.0'}%</p>
+                <div className="bg-[#60166b]/10 p-3 sm:p-4 rounded-lg">
+                  <p className="text-xs sm:text-sm font-medium text-[#60166b]">Conversion Rate</p>
+                  <p className="text-lg sm:text-xl font-bold text-[#60166b]">{userStats?.conversion_rate?.toFixed(1) || '0.0'}%</p>
                 </div>
               </div>
             </Card>
@@ -135,15 +138,15 @@ const AdminDashboardPage: React.FC = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-        <Card className="p-6">
-          <div className="flex items-center mb-4">
+        <Card className="p-4 sm:p-6">
+          <div className="flex items-center mb-3 sm:mb-4">
             <Users className="w-5 h-5 text-blue-600 mr-2" />
-            <h3 className="text-lg font-semibold">User Management</h3>
+            <h3 className="text-base sm:text-lg font-semibold">User Management</h3>
           </div>
-          <p className="text-gray-600 mb-4">
+          <p className="text-sm text-gray-600 mb-3 sm:mb-4">
             Manage pre-registered users, send invitations, and track user status
           </p>
-          <Button className="w-full" variant="outline">
+          <Button className="w-full text-sm" variant="outline">
             Manage Users
           </Button>
         </Card>

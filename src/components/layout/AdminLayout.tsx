@@ -71,56 +71,48 @@ const AdminLayout: React.FC = () => {
         <div className="min-h-screen bg-gray-50">
           {/* Header */}
           <header className="bg-white shadow-sm border-b">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center h-14 sm:h-16">
-                <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+              <div className="flex justify-between items-center h-14 sm:h-16 gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-4 min-w-0 flex-1">
                   <Link
                     to="/dashboard"
                     className="flex items-center text-xs sm:text-sm text-gray-600 hover:text-gray-900 flex-shrink-0"
                   >
-                    <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                    <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-0.5 sm:mr-1" />
                     <span className="hidden sm:inline">Back to App</span>
-                    <span className="sm:hidden">Back</span>
+                    <span className="sm:hidden text-[10px]">Back</span>
                   </Link>
-                  <div className="h-4 sm:h-6 w-px bg-gray-300" />
-                  <h1 className="text-lg sm:text-xl font-semibold text-gray-900 truncate">
+                  <div className="h-3 sm:h-6 w-px bg-gray-300 flex-shrink-0" />
+                  <h1 className="text-sm sm:text-xl font-semibold text-gray-900 truncate">
                     <span className="hidden sm:inline">Admin Panel</span>
                     <span className="sm:hidden">Admin</span>
                   </h1>
                 </div>
                 
-                <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-                  <span className="text-xs sm:text-sm text-gray-600 truncate max-w-32 sm:max-w-none">
-                    <span className="hidden sm:inline">Welcome, </span>
-                    {(user as any)?.profile?.name || user?.email?.split('@')[0]}
-                  </span>
-                  <Button variant="ghost" size="sm" className="flex-shrink-0">
-                    <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
-                  </Button>
-                </div>
               </div>
             </div>
           </header>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
-              {/* Mobile Navigation */}
+              {/* Mobile Navigation - Grid Layout */}
               <div className="lg:hidden">
-                <nav className="flex overflow-x-auto space-x-1 pb-2">
+                <nav className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {navigation.map((item) => {
                     const Icon = item.icon
                     return (
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`flex items-center px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-colors ${
+                        className={`flex items-center justify-center sm:justify-start px-3 py-2.5 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
                           item.current
-                            ? 'bg-orange-100 text-orange-900 border-b-2 border-orange-600'
-                            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                            ? 'bg-[#60166b] text-white shadow-md'
+                            : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
                         }`}
                       >
-                        <Icon className="w-4 h-4 mr-2" />
-                        {item.name}
+                        <Icon className="w-4 h-4 sm:mr-2 flex-shrink-0" />
+                        <span className="hidden sm:inline ml-2">{item.name}</span>
+                        <span className="sm:hidden ml-1 text-[10px]">{item.name}</span>
                       </Link>
                     )
                   })}
@@ -138,7 +130,7 @@ const AdminLayout: React.FC = () => {
                         to={item.href}
                         className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                           item.current
-                            ? 'bg-orange-100 text-orange-900 border-r-2 border-orange-600'
+                            ? 'bg-[#60166b]/10 text-[#60166b] border-r-2 border-[#60166b]'
                             : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                         }`}
                       >

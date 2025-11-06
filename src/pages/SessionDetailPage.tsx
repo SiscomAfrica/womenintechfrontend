@@ -28,8 +28,10 @@ import { useJoinSession, useLeaveSession } from "@/hooks/useAttendance"
 import { useUserFeedback } from "@/hooks/useFeedback"
 import { useQueryClient } from "@tanstack/react-query"
 import feedbackService from "@/services/feedback"
+import sessionsService from "@/services/sessions"
 import type { SessionWithAttendance } from "@/services/sessions"
 import type { SessionFeedbackSummary } from "@/types"
+import type { Attendee } from "@/services/sessions"
 
 export default function SessionDetailPage() {
   const { sessionId } = useParams<{ sessionId: string }>()
@@ -45,9 +47,12 @@ export default function SessionDetailPage() {
   const [actionLoading, setActionLoading] = useState(false)
   const [showAllFeedback, setShowAllFeedback] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showAttendees, setShowAttendees] = useState(false)
   const [feedbackSummary, setFeedbackSummary] = useState<SessionFeedbackSummary | null>(null)
   const [loadingFeedback, setLoadingFeedback] = useState(false)
   const [deletingFeedback, setDeletingFeedback] = useState(false)
+  const [attendees, setAttendees] = useState<Attendee[]>([])
+  const [loadingAttendees, setLoadingAttendees] = useState(false)
 
   
   const fromSchedule = location.state?.fromSchedule
@@ -157,6 +162,23 @@ export default function SessionDetailPage() {
     }
   }
 
+  const handleViewAttendees = async () => {
+    if (!sessionId) return
+    
+    setLoadingAttendees(true)
+    setShowAttendees(true)
+    
+    try {
+      const result = await sessionsService.getSessionAttendees(sessionId)
+      setAttendees(result.attendees)
+    } catch (error) {
+      console.error('Error loading attendees:', error)
+      alert('Failed to load attendees. Please try again.')
+    } finally {
+      setLoadingAttendees(false)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-bg-tertiary">
@@ -176,7 +198,7 @@ export default function SessionDetailPage() {
 
         {}
         <div className="flex justify-center items-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#FF6B35]" />
+          <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
         </div>
       </div>
     )
@@ -231,10 +253,10 @@ export default function SessionDetailPage() {
       <div className="p-4 space-y-4">
         {}
         <div className="flex gap-2">
-          <span className="text-xs px-3 py-1 rounded-full bg-[#FF6B35] text-white font-medium">
+          <span className="text-xs px-3 py-1 rounded-full bg-[#60166b] text-white font-medium">
             {sessionType.toUpperCase()}
           </span>
-          <span className="text-xs px-3 py-1 rounded-full bg-[#FF6B35]/10 text-[#FF6B35] font-medium">
+          <span className="text-xs px-3 py-1 rounded-full bg-[#60166b]/10 text-[#60166b] font-medium">
             DAY {session.day}
           </span>
         </div>
@@ -248,27 +270,40 @@ export default function SessionDetailPage() {
         <Card>
           <CardContent className="p-4 space-y-3">
             <div className="flex items-center gap-3">
-              <Calendar className="h-5 w-5 text-[#FF6B35] flex-shrink-0" />
+              <Calendar className="h-5 w-5 text-[#60166b] flex-shrink-0" />
               <span className="text-text-secondary">{formatDate(session.start_time)}</span>
             </div>
             <div className="flex items-center gap-3">
-              <Clock className="h-5 w-5 text-[#FF6B35] flex-shrink-0" />
+              <Clock className="h-5 w-5 text-[#60166b] flex-shrink-0" />
               <span className="text-text-secondary">
                 {formatTime(session.start_time)} - {formatTime(session.end_time)}
               </span>
             </div>
             {session.session_data?.location && (
               <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-[#FF6B35] flex-shrink-0" />
+                <MapPin className="h-5 w-5 text-[#60166b] flex-shrink-0" />
                 <span className="text-text-secondary">{session.session_data.location}</span>
               </div>
             )}
             <div className="flex items-center gap-3">
-              <Users className="h-5 w-5 text-[#FF6B35] flex-shrink-0" />
-              <span className="text-text-secondary">
-                {session.attendee_count} attending
-                {session.session_data?.max_attendees && ` / ${session.session_data.max_attendees} capacity`}
-              </span>
+              <Users className="h-5 w-5 text-[#60166b] flex-shrink-0" />
+              <div className="flex-1 flex items-center justify-between">
+                <span className="text-text-secondary">
+                  {session.attendee_count} attending
+                  {session.session_data?.max_attendees && ` / ${session.session_data.max_attendees} capacity`}
+                </span>
+                {session.attendee_count > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleViewAttendees}
+                    className="text-[#60166b] hover:text-[#4d1157] -mr-2"
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    View
+                  </Button>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -291,8 +326,8 @@ export default function SessionDetailPage() {
             <CardContent className="p-4">
               <h3 className="font-semibold text-text-primary mb-3">Speaker</h3>
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-full bg-[#FF6B35]/10 flex items-center justify-center flex-shrink-0">
-                  <Users className="h-6 w-6 text-[#FF6B35]" />
+                <div className="w-12 h-12 rounded-full bg-[#60166b]/10 flex items-center justify-center flex-shrink-0">
+                  <Users className="h-6 w-6 text-[#60166b]" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-medium text-text-primary">
@@ -336,7 +371,7 @@ export default function SessionDetailPage() {
               
               {userFeedback ? (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-[#FF6B35]">
+                  <div className="flex items-center gap-2 text-[#60166b]">
                     <CheckCircle2 className="h-5 w-5" />
                     <span className="font-medium">Feedback Submitted</span>
                   </div>
@@ -350,7 +385,7 @@ export default function SessionDetailPage() {
                             key={star}
                             className={`h-5 w-5 ${
                               userFeedback.responses.rating >= star
-                                ? 'fill-[#FF6B35] text-[#FF6B35]'
+                                ? 'fill-[#60166b] text-[#60166b]'
                                 : 'text-gray-300'
                             }`}
                           />
@@ -398,7 +433,7 @@ export default function SessionDetailPage() {
                     onClick={() => navigate(`/feedback/${session.id}`)}
                   >
                     <div className="flex items-center gap-2">
-                      <MessageCircle className="h-5 w-5 text-[#FF6B35]" />
+                      <MessageCircle className="h-5 w-5 text-[#60166b]" />
                       <span>Share Your Feedback</span>
                     </div>
                     <ArrowLeft className="h-5 w-5 rotate-180" />
@@ -432,7 +467,7 @@ export default function SessionDetailPage() {
 
           {loadingFeedback ? (
             <div className="flex justify-center items-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-[#FF6B35]" />
+              <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
             </div>
           ) : feedbackSummary ? (
             <div className="space-y-6">
@@ -456,7 +491,7 @@ export default function SessionDetailPage() {
                           key={star}
                           className={`h-4 w-4 ${
                             feedbackSummary.average_rating >= star
-                              ? 'fill-[#FF6B35] text-[#FF6B35]'
+                              ? 'fill-[#60166b] text-[#60166b]'
                               : 'text-gray-300'
                           }`}
                         />
@@ -479,11 +514,11 @@ export default function SessionDetailPage() {
                       <div key={rating} className="flex items-center gap-3">
                         <div className="flex items-center gap-1 w-16">
                           <span className="text-sm text-text-secondary">{rating}</span>
-                          <Star className="h-3 w-3 fill-[#FF6B35] text-[#FF6B35]" />
+                          <Star className="h-3 w-3 fill-[#60166b] text-[#60166b]" />
                         </div>
                         <div className="flex-1 h-2 bg-bg-tertiary rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-[#FF6B35]"
+                            className="h-full bg-[#60166b]"
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
@@ -523,7 +558,7 @@ export default function SessionDetailPage() {
                                   <span className="w-8 text-text-tertiary">{rating}★</span>
                                   <div className="flex-1 h-1.5 bg-bg-tertiary rounded-full overflow-hidden">
                                     <div
-                                      className="h-full bg-[#FF6B35]/60"
+                                      className="h-full bg-[#60166b]/60"
                                       style={{ width: `${percentage}%` }}
                                     />
                                   </div>
@@ -606,6 +641,71 @@ export default function SessionDetailPage() {
         </DialogContent>
       </Dialog>
 
+      {/* Attendees Dialog */}
+      <Dialog open={showAttendees} onOpenChange={setShowAttendees}>
+        <DialogContent className="max-w-md sm:max-w-lg">
+          <DialogHeader className="pb-3 border-b">
+            <DialogTitle>Session Attendees</DialogTitle>
+            <DialogDescription>
+              {attendees.length > 0 ? (
+                <span>{attendees.length} {attendees.length === 1 ? 'person' : 'people'} attending</span>
+              ) : (
+                <span>People attending this session</span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          {loadingAttendees ? (
+            <div className="flex justify-center items-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
+            </div>
+          ) : attendees.length > 0 ? (
+            <div className="max-h-[60vh] overflow-y-auto pr-2 -mr-2">
+              <div className="space-y-2">
+                {attendees.map((attendee) => {
+                  const displayName = attendee.profile?.name || attendee.email;
+                  const profilePhoto = attendee.profile?.photo_url;
+                  
+                  return (
+                    <div 
+                      key={attendee.id} 
+                      className="flex items-center gap-3 p-3 rounded-lg border border-border-primary hover:bg-bg-tertiary transition-colors"
+                    >
+                      {/* Profile Photo */}
+                      <div className="w-10 h-10 rounded-full bg-[#60166b]/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {profilePhoto ? (
+                          <img 
+                            src={profilePhoto} 
+                            alt={displayName}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-[#60166b] font-semibold">
+                            {displayName[0]?.toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Attendee Info */}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-text-primary truncate">
+                          {displayName}
+                        </h4>
+                        <p className="text-sm text-text-tertiary truncate">
+                          {attendee.email}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <p className="text-center text-text-tertiary py-8">No attendees yet.</p>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {}
       {!fromSchedule && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border-primary p-4 z-50 md:bottom-0 mb-[60px] md:mb-0">
@@ -615,7 +715,7 @@ export default function SessionDetailPage() {
             className={`w-full ${
               isAttending
                 ? 'bg-green-50 text-green-700 hover:bg-green-100'
-                : 'bg-[#FF6B35] text-white hover:bg-[#E55A2B]'
+                : 'bg-[#60166b] text-white hover:bg-[#4d1157]'
             }`}
           >
             {actionLoading ? (

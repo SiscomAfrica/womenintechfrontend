@@ -106,7 +106,7 @@ const SystemHealthMonitor: React.FC = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-orange-600" />
+          <Zap className="w-5 h-5 text-[#60166b]" />
           <h2 className="text-lg font-semibold text-gray-900">System Health</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -130,7 +130,7 @@ const SystemHealthMonitor: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-orange-600" />
+          <Zap className="w-5 h-5 text-[#60166b]" />
           <h2 className="text-lg font-semibold text-gray-900">System Health</h2>
         </div>
         {health && (
@@ -285,7 +285,7 @@ const SystemHealthMonitor: React.FC = () => {
                 </div>
                 
                 <div className="space-y-1">
-                  <div className="text-2xl font-bold text-orange-600">
+                  <div className="text-2xl font-bold text-[#60166b]">
                     {metrics.database.total_polls.toLocaleString()}
                   </div>
                   <div className="text-xs text-gray-500">Total Polls</div>

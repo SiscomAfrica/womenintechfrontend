@@ -300,6 +300,10 @@ class AdminService {
     return this.request<UserStats>('/admin/users/stats')
   }
 
+  async getUsersSimpleList(): Promise<Array<{ id: string; name: string; email: string }>> {
+    return this.request<Array<{ id: string; name: string; email: string }>>('/admin/users/simple-list')
+  }
+
   async getPreRegisteredUsers(skip = 0, limit = 100): Promise<PreRegisteredUser[]> {
     return this.request<PreRegisteredUser[]>(`/admin/users/pre-registered?skip=${skip}&limit=${limit}`)
   }
@@ -370,6 +374,12 @@ class AdminService {
   async deactivateAnnouncement(announcementId: string): Promise<{ message: string }> {
     return this.request<{ message: string }>(`/admin/announcements/${announcementId}/deactivate`, {
       method: 'PUT',
+    })
+  }
+
+  async deleteAnnouncement(announcementId: string): Promise<{ message: string }> {
+    return this.request<{ message: string }>(`/admin/announcements/${announcementId}`, {
+      method: 'DELETE',
     })
   }
 
@@ -567,6 +577,12 @@ class AdminService {
   async deactivateUser(userId: string): Promise<{ message: string }> {
     return this.request<{ message: string }>(`/admin/users/${userId}/deactivate`, {
       method: 'PUT',
+    })
+  }
+
+  async deleteUser(userId: string): Promise<{ message: string }> {
+    return this.request<{ message: string }>(`/admin/users/${userId}`, {
+      method: 'DELETE',
     })
   }
 

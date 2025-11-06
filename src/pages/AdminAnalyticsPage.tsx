@@ -164,8 +164,8 @@ Connection Acceptance Rate,${displayAnalytics.networking_analytics.acceptance_ra
       title: 'Daily Active',
       value: displayAnalytics.user_engagement.daily_active_users,
       icon: TrendingUp,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-#60166b',
+      bgColor: 'bg-#60166b/10',
       change: displayAnalytics.user_engagement.daily_active_users > 0 ? '+15%' : 'No data',
       changeType: 'positive' as const
     },
@@ -206,7 +206,7 @@ Connection Acceptance Rate,${displayAnalytics.networking_analytics.acceptance_ra
           </Button>
           <Button 
             size="sm" 
-            className="bg-orange-600 hover:bg-orange-700"
+            className="bg-#60166b hover:bg-#4d1157"
             onClick={handleExportReport}
           >
             <Download className="w-4 h-4 mr-2" />
@@ -392,9 +392,9 @@ Connection Acceptance Rate,${displayAnalytics.networking_analytics.acceptance_ra
                 <p className="text-2xl font-bold text-purple-900">{displayAnalytics.networking_analytics.total_connections}</p>
                 <p className="text-sm text-purple-700">Connections</p>
               </div>
-              <div className="text-center p-3 bg-orange-50 rounded-lg">
-                <p className="text-2xl font-bold text-orange-900">{displayAnalytics.networking_analytics.acceptance_rate.toFixed(1)}%</p>
-                <p className="text-sm text-orange-700">Accept Rate</p>
+              <div className="text-center p-3 bg-#60166b/10 rounded-lg">
+                <p className="text-2xl font-bold text-#4d1157">{displayAnalytics.networking_analytics.acceptance_rate.toFixed(1)}%</p>
+                <p className="text-sm text-#4d1157">Accept Rate</p>
               </div>
             </div>
             
@@ -402,7 +402,7 @@ Connection Acceptance Rate,${displayAnalytics.networking_analytics.acceptance_ra
               displayAnalytics.networking_analytics.top_networkers.map((networker, index) => (
                 <div key={networker.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-#60166b rounded-full flex items-center justify-center">
                       <span className="text-white font-semibold text-sm">
                         {networker.name.charAt(0)}
                       </span>
@@ -458,7 +458,7 @@ Connection Acceptance Rate,${displayAnalytics.networking_analytics.acceptance_ra
                   <div className={`w-2 h-2 rounded-full ${
                     activity.type === 'user' ? 'bg-blue-500' :
                     activity.type === 'poll' ? 'bg-green-500' :
-                    activity.type === 'session' ? 'bg-orange-500' :
+                    activity.type === 'session' ? 'bg-#60166b/100' :
                     activity.type === 'network' ? 'bg-purple-500' :
                     'bg-gray-500'
                   }`}></div>

@@ -35,6 +35,28 @@ export interface SessionWithAttendance {
   attendee_count: number
 }
 
+export interface Attendee {
+  id: string
+  user_id: string
+  email: string
+  profile: {
+    name?: string
+    company?: string
+    job_title?: string
+    bio?: string
+    photo_url?: string
+    interests?: string[]
+    skills?: string[]
+  }
+}
+
+export interface SessionAttendeesResponse {
+  sessionId: string
+  sessionTitle: string
+  attendees: Attendee[]
+  totalAttendees: number
+}
+
 export interface Session {
   id: string
   title: string
@@ -201,6 +223,15 @@ class SessionsService {
       const sessionEnd = new Date(session.end_time)
       return sessionEnd >= now
     })
+  }
+
+  /**
+   * Get list of attendees for a session
+   */
+  async getSessionAttendees(sessionId: string): Promise<SessionAttendeesResponse> {
+    return await this.request<SessionAttendeesResponse>(
+      `/sessions/${sessionId}/attendees`
+    )
   }
 }
 

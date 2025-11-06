@@ -275,7 +275,7 @@ export default function RegisterPage() {
         <CardHeader className="text-center">
           <div className="w-20 h-20 mx-auto mb-4">
             <img 
-              src="/assets/images/afriinovation512.png" 
+              src="/assets/images/main.png" 
               alt="Afriinovation Logo" 
               className="w-full h-full object-contain"
             />

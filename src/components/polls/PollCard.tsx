@@ -353,7 +353,7 @@ export function PollCard({ poll, onViewResults }: PollCardProps) {
             <Button
               onClick={handleSubmitVote}
               disabled={pollVoteMutation.isPending}
-              className="w-full sm:flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+              className="w-full sm:flex-1 bg-[#60166b] hover:bg-[#60166b] text-white"
             >
               {pollVoteMutation.isPending ? 'Submitting...' : 'Submit Response'}
             </Button>

@@ -15,6 +15,7 @@ import {
   CalendarCheck,
   Send,
   Inbox,
+  Trash2,
 } from 'lucide-react'
 import {
   useMeetingRequests,
@@ -169,6 +170,38 @@ export default function MeetingsPage() {
                 </div>
               )}
 
+              {/* Actions for Accepted Meetings - Delete Option (Only for Sent/Requester) */}
+              {type === 'accepted' && meeting.status === 'accepted' && (
+                <>
+                  {!isReceived ? (
+                    // Show delete button if user is the requester (sent the request)
+                    <Button
+                      onClick={() => handleCancel(meeting.id)}
+                      disabled={isProcessing}
+                      variant="outline"
+                      className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                      size="sm"
+                    >
+                      {cancelMeeting.isPending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete Meeting
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    // Show info text if user received the request
+                    <div className="p-2 bg-gray-50 rounded-md border border-gray-200">
+                      <p className="text-xs text-gray-600 text-center">
+                        Only the requester can cancel this meeting
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+
               {/* Actions for Received Pending */}
               {type === 'received' && meeting.status === 'pending' && (
                 <div className="flex gap-2">
@@ -283,12 +316,6 @@ export default function MeetingsPage() {
 
         {/* Received Requests */}
         <TabsContent value="received" className="space-y-3 mt-6">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-1 w-1 rounded-full bg-green-500"></div>
-            <p className="text-sm font-medium text-gray-700">
-              Meeting requests you received (Green border)
-            </p>
-          </div>
           {receivedLoading ? (
             <div className="flex justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
@@ -310,12 +337,6 @@ export default function MeetingsPage() {
 
         {/* Sent Requests */}
         <TabsContent value="sent" className="space-y-3 mt-6">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-1 w-1 rounded-full bg-blue-500"></div>
-            <p className="text-sm font-medium text-gray-700">
-              Meeting requests you sent (Blue border)
-            </p>
-          </div>
           {sentLoading ? (
             <div className="flex justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
@@ -337,12 +358,6 @@ export default function MeetingsPage() {
 
         {/* Accepted Meetings */}
         <TabsContent value="accepted" className="space-y-3 mt-6">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-1 w-1 rounded-full bg-purple-500"></div>
-            <p className="text-sm font-medium text-gray-700">
-              All accepted meetings (Green = received, Blue = sent)
-            </p>
-          </div>
           {acceptedLoading ? (
             <div className="flex justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />

@@ -2,6 +2,19 @@ import { toast } from 'sonner'
 import { useNotificationStore } from '@/stores/notification-store'
 import { useBrowserNotifications } from '@/hooks/useBrowserNotifications'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+export interface BackendNotification {
+  id: string
+  userId: string
+  title: string
+  message: string
+  type: 'info' | 'warning' | 'urgent'
+  isRead: boolean
+  createdAt: string
+  data?: any
+}
+
 export interface NotificationData {
   type: 'poll' | 'connection_request' | 'schedule_change' | 'announcement' | 'system'
   title: string
@@ -216,6 +229,95 @@ class NotificationService {
   clearExpired() {
     const { clearExpiredNotifications } = useNotificationStore.getState()
     clearExpiredNotifications()
+  }
+
+  // Fetch notifications from backend
+  async fetchNotifications(page: number = 1, size: number = 20): Promise<{
+    items: BackendNotification[]
+    total: number
+    page: number
+    size: number
+    pages: number
+  }> {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      throw new Error('No authentication token found')
+    }
+
+    const response = await fetch(`${API_BASE_URL}/notifications?page=${page}&size=${size}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch notifications')
+    }
+
+    return response.json()
+  }
+
+  // Mark notification as read
+  async markAsRead(notificationId: string): Promise<void> {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      throw new Error('No authentication token found')
+    }
+
+    const response = await fetch(`${API_BASE_URL}/notifications/${notificationId}/read`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to mark notification as read')
+    }
+  }
+
+  // Mark all notifications as read
+  async markAllAsRead(): Promise<void> {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      throw new Error('No authentication token found')
+    }
+
+    const response = await fetch(`${API_BASE_URL}/notifications/read-all`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to mark all notifications as read')
+    }
+  }
+
+  // Get unread count
+  async getUnreadCount(): Promise<number> {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      return 0
+    }
+
+    const response = await fetch(`${API_BASE_URL}/notifications/unread-count`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      return 0
+    }
+
+    const data = await response.json()
+    return data.count || 0
   }
 }
 

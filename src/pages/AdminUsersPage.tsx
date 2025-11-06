@@ -13,7 +13,6 @@ import {
   Mail, 
   Filter, 
   MoreHorizontal,
-  Upload,
   Check,
   X,
   Calendar,
@@ -25,7 +24,9 @@ import {
   Key,
   Eye,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Trash2,
+  Loader2
 } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -42,7 +43,6 @@ const AdminUsersPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [selectedUsers, setSelectedUsers] = useState<string[]>([])
   const [showAddUser, setShowAddUser] = useState(false)
-  const [showBulkUpload, setShowBulkUpload] = useState(false)
   const [showUserDetails, setShowUserDetails] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(0)
   const [pageSize] = useState(100)
@@ -147,6 +147,17 @@ const AdminUsersPage: React.FC = () => {
     },
   })
 
+  const deleteUserMutation = useMutation({
+    mutationFn: (userId: string) => adminService.deleteUser(userId),
+    onSuccess: () => {
+      toast.success('User deleted successfully')
+      queryClient.invalidateQueries({ queryKey: ['admin', 'registered-users-with-count'] })
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Failed to delete user')
+    },
+  })
+
   const resetPasswordMutation = useMutation({
     mutationFn: (userId: string) => adminService.resetUserPassword(userId),
     onSuccess: () => {
@@ -246,25 +257,9 @@ const AdminUsersPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           {activeTab === 'pre-registered' && (
             <>
-              <Dialog open={showBulkUpload} onOpenChange={setShowBulkUpload}>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                    <Upload className="w-4 h-4 mr-2" />
-                    <span className="sm:hidden">Upload</span>
-                    <span className="hidden sm:inline">Bulk Upload</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="w-[95vw] max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Bulk Upload Users</DialogTitle>
-                  </DialogHeader>
-                  <BulkUploadForm onClose={() => setShowBulkUpload(false)} />
-                </DialogContent>
-              </Dialog>
-              
               <Dialog open={showAddUser} onOpenChange={setShowAddUser}>
                 <DialogTrigger asChild>
-                  <Button size="sm" className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto">
+                  <Button size="sm" className="bg-#60166b hover:bg-#4d1157 w-full sm:w-auto">
                     <UserPlus className="w-4 h-4 mr-2" />
                     Add User
                   </Button>
@@ -308,6 +303,7 @@ const AdminUsersPage: React.FC = () => {
             handleSelectAll={handleSelectAll}
             activateUserMutation={activateUserMutation}
             deactivateUserMutation={deactivateUserMutation}
+            deleteUserMutation={deleteUserMutation}
             resetPasswordMutation={resetPasswordMutation}
             setShowUserDetails={setShowUserDetails}
           />
@@ -428,6 +424,7 @@ const RegisteredUsersTab: React.FC<{
   handleSelectAll: (checked: boolean) => void
   activateUserMutation: any
   deactivateUserMutation: any
+  deleteUserMutation: any
   resetPasswordMutation: any
   setShowUserDetails: (userId: string) => void
 }> = ({ 
@@ -443,6 +440,7 @@ const RegisteredUsersTab: React.FC<{
   handleSelectAll,
   activateUserMutation,
   deactivateUserMutation,
+  deleteUserMutation,
   resetPasswordMutation,
   setShowUserDetails
 }) => {
@@ -665,7 +663,26 @@ const RegisteredUsersTab: React.FC<{
                           title="Reset Password"
                           className="text-blue-600 hover:text-blue-700 p-1 sm:p-2 hidden sm:flex"
                         >
-                          <Key className="w-3 h-3 sm:w-4 sm:h-4" />
+                          {resetPasswordMutation.isPending ? (
+                            <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
+                          ) : (
+                            <Key className="w-3 h-3 sm:w-4 sm:h-4" />
+                          )}
+                        </Button>
+                        
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                              deleteUserMutation.mutate(user.id)
+                            }
+                          }}
+                          disabled={deleteUserMutation.isPending}
+                          title="Delete User"
+                          className="text-red-600 hover:text-red-700 p-1 sm:p-2"
+                        >
+                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                         </Button>
                       </div>
                     </td>
@@ -993,112 +1010,9 @@ const AddUserForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <Button 
           type="submit" 
           disabled={addUserMutation.isPending}
-          className="bg-orange-600 hover:bg-orange-700"
+          className="bg-#60166b hover:bg-#4d1157"
         >
           {addUserMutation.isPending ? 'Adding...' : 'Add User'}
-        </Button>
-      </div>
-    </form>
-  )
-}
-
-
-const BulkUploadForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [file, setFile] = useState<File | null>(null)
-  const [dragActive, setDragActive] = useState(false)
-
-  const queryClient = useQueryClient()
-
-  const bulkUploadMutation = useMutation({
-    mutationFn: (file: File) => adminService.bulkPreRegisterUsers(file),
-    onSuccess: (users) => {
-      toast.success(`Successfully uploaded ${users.length} users`)
-      queryClient.invalidateQueries({ queryKey: ['admin', 'pre-registered-users-with-count'] })
-      onClose()
-    },
-    onError: (error: any) => {
-      toast.error(error.message || 'Failed to upload users')
-    },
-  })
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true)
-    } else if (e.type === 'dragleave') {
-      setDragActive(false)
-    }
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-    
-    const files = e.dataTransfer.files
-    if (files && files[0]) {
-      setFile(files[0])
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (file) {
-      bulkUploadMutation.mutate(file)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Upload CSV File
-        </label>
-        <div
-          className={`border-2 border-dashed rounded-lg p-6 text-center ${
-            dragActive ? 'border-orange-500 bg-orange-50' : 'border-gray-300'
-          }`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-        >
-          <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <div className="space-y-2">
-            <p className="text-sm text-gray-600">
-              {file ? file.name : 'Drag and drop your CSV file here, or click to browse'}
-            </p>
-            <input
-              type="file"
-              accept=".csv"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              className="hidden"
-              id="file-upload"
-            />
-            <label
-              htmlFor="file-upload"
-              className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
-            >
-              Choose File
-            </label>
-          </div>
-        </div>
-        <p className="text-xs text-gray-500 mt-2">
-          CSV should include columns: email, name, job_title (optional), company (optional)
-        </p>
-      </div>
-
-      <div className="flex justify-end gap-3 pt-4">
-        <Button type="button" variant="outline" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button 
-          type="submit" 
-          disabled={!file || bulkUploadMutation.isPending}
-          className="bg-orange-600 hover:bg-orange-700"
-        >
-          {bulkUploadMutation.isPending ? 'Uploading...' : 'Upload Users'}
         </Button>
       </div>
     </form>
@@ -1252,7 +1166,7 @@ const UserDetailsDialog: React.FC<{ userId: string; onClose: () => void }> = ({ 
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-orange-600 h-2 rounded-full" 
+                    className="bg-#60166b h-2 rounded-full" 
                     style={{ width: `${(userActivity.activity.engagement_score / 10) * 100}%` }}
                   ></div>
                 </div>

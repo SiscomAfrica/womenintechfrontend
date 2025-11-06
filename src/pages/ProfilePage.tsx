@@ -190,7 +190,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-bg-tertiary flex justify-center items-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[#FF6B35]" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#60166b]" />
       </div>
     )
   }
@@ -226,7 +226,7 @@ export default function ProfilePage() {
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
               {}
               <div className="relative flex-shrink-0">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-[#FF6B35] flex items-center justify-center text-white text-3xl sm:text-4xl font-bold">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-[#60166b] flex items-center justify-center text-white text-3xl sm:text-4xl font-bold">
                   {profile?.firstName?.[0]}{profile?.lastName?.[0]}
                 </div>
                 {editing && (
@@ -251,7 +251,7 @@ export default function ProfilePage() {
                       {profile?.company && (
                         <div className="flex items-center justify-center sm:justify-start gap-2 text-text-secondary">
                           <Building2 className="h-4 w-4 flex-shrink-0" />
-                          <span className="text-sm sm:text-base font-medium text-[#FF6B35]">{profile.company}</span>
+                          <span className="text-sm sm:text-base font-medium text-[#60166b]">{profile.company}</span>
                         </div>
                       )}
                       {profile?.jobTitle && (
@@ -348,7 +348,7 @@ export default function ProfilePage() {
               <Button
                 onClick={handleSaveProfile}
                 disabled={saving || !editForm.fullName.trim() || !editForm.jobTitle.trim() || !hasChanges}
-                className="flex-1 bg-[#FF6B35] hover:bg-[#E55A2B] text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-[#60166b] hover:bg-[#4d1157] text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <>
@@ -410,7 +410,7 @@ export default function ProfilePage() {
                         {profile.interests.map((interest, index) => (
                           <span
                             key={index}
-                            className="px-3 py-1 bg-[#FF6B35]/10 text-[#FF6B35] rounded-full text-sm"
+                            className="px-3 py-1 bg-[#60166b]/10 text-[#60166b] rounded-full text-sm"
                           >
                             {interest}
                           </span>

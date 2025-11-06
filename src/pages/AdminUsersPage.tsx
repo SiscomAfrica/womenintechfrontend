@@ -67,7 +67,6 @@ const AdminUsersPage: React.FC = () => {
   const { data: registeredUsersData, isLoading: isLoadingRegistered } = useQuery({
     queryKey: ['admin', 'registered-users-with-count', currentPage, pageSize, searchQuery, statusFilter],
     queryFn: () => {
-      // Convert statusFilter to API parameters
       let isActive: boolean | undefined
       let isVerified: boolean | undefined
       

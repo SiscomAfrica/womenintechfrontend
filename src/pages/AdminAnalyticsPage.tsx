@@ -68,14 +68,14 @@ const AdminAnalyticsPage: React.FC = () => {
   const { data: analytics, isLoading } = useQuery<AnalyticsData>({
     queryKey: ['admin', 'analytics', timeRange],
     queryFn: () => adminService.getAnalytics(timeRange),
-    refetchInterval: 5 * 60 * 1000, // Refresh every 5 minutes
+    refetchInterval: 5 * 60 * 1000
   })
 
   // Fetch real-time activity data
   const { data: recentActivity, isLoading: isLoadingActivity } = useQuery({
     queryKey: ['admin', 'recent-activity'],
     queryFn: () => adminService.getRecentActivity(5),
-    refetchInterval: 30 * 1000, // Refresh every 30 seconds for real-time feel
+    refetchInterval: 30 * 1000, 
   })
 
   // Fallback data when no real data is available

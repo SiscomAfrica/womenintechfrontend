@@ -1,44 +1,28 @@
 import { Building2 } from "lucide-react"
 
 export default function PartnersPage() {
-  // Define priority partners (first two)
+  // Define priority partners (top partners in specific order)
   const priorityPartners = [
+    { name: "Tambua", logo: "/assets/partners/Tambua.svg" },
+    { name: "Platcorp", logo: "/assets/partners/platcorp.svg" },
+    { name: "Vabu", logo: "/assets/partners/Vabu-3.png" },
     { name: "SISCOM", logo: "/assets/partners/PARTNER-SISCOM.png" },
-    { name: "ANZA", logo: "/assets/partners/PARTNER-ANZA.png" },
+    { name: "AWIT", logo: "/assets/partners/AWIT.png" },
   ]
 
-  // Define all other partners
+  // Define all other partners (design partners first, then Kenya Tech Events, then rest)
   const otherPartners = [
-    { name: "TASEC", logo: "/assets/partners/PARTNER-TASEC.png" },
-    { name: "ACE", logo: "/assets/partners/PARTNER-ACE.png" },
-    { name: "IHUB", logo: "/assets/partners/PARTNER-IHUB.png" },
-    { name: "JHUB", logo: "/assets/partners/PARTNER-JHUB.png" },
-    { name: "LITTLE", logo: "/assets/partners/PARTNER-LITTLE.png" },
-    { name: "SISULE", logo: "/assets/partners/PARTNER-SISULE.png" },
-    { name: "TTW", logo: "/assets/partners/PARTNER-TTW.png" },
-    { name: "WOJO", logo: "/assets/partners/PARTNER-WOJO.png" },
-    { name: "AIDUCATION", logo: "/assets/partners/PARTNER-AIDUCATION.png" },
-    { name: "Close The Gap", logo: "/assets/partners/PARTNER-CLOSETHEGAP.png" },
-    { name: "Grid Nai", logo: "/assets/partners/PARTNER-GRID-NAI.png" },
-    { name: "Nafasi", logo: "/assets/partners/PARTNER-NAFASI.png" },
-    { name: "Heva", logo: "/assets/partners/partner-heva.png" },
-    { name: "Zindua School", logo: "/assets/partners/Zindua-Transparent-Logo.png" },
-    { name: "Bebba Beggie", logo: "/assets/partners/Bebba_Beggie_Logo.png" },
-    { name: "Founder Hub", logo: "/assets/partners/Foubder-Hub.png" },
-    { name: "The Cube", logo: "/assets/partners/the-cube.png" },
-    { name: "Vabu", logo: "/assets/partners/Vabu-3.png" },
-    { name: "SwahiliPot Hub", logo: "/assets/partners/SwahiliPot-logo-png-1-1.png" },
-    { name: "Riara University", logo: "/assets/partners/riara-uni-partners.png" },
-    { name: "Unicaf", logo: "/assets/partners/unicaf-logo.png" },
-    { name: "Anza Grow", logo: "/assets/partners/anza-grow.png" },
-    { name: "AUG", logo: "/assets/partners/aug.png" },
-    { name: "Beta", logo: "/assets/partners/Beta-Logo.jpg" },
-    { name: "Blockchain Centre", logo: "/assets/partners/Blockchain_Centre_Logo.png" },
-    { name: "Drice", logo: "/assets/partners/drice.png" },
-    { name: "Eldoret Grind", logo: "/assets/partners/eldoret-grind.png" },
-    { name: "KDF", logo: "/assets/partners/KDF-logo.png" },
-    { name: "Modua", logo: "/assets/partners/modua.png" },
-    { name: "TechRift", logo: "/assets/partners/techrift-logo.png" },
+    // Design Partners
+    { name: "Kenya Designs Konversations", logo: "/assets/partners/kenyakonversations.png" },
+    // Events
+    { name: "Kenya Tech Events", logo: "/assets/partners/KENYA TECH EVENTS LOGO MAIN.jpeg" },
+    // Other Partners
+    { name: "iHub", logo: "/assets/partners/iHUB logo (1).png" },
+    { name: "TTW", logo: "/assets/partners/TTW transparet.png" },
+    { name: "WomenTech Network", logo: "/assets/partners/WomenTech Network Logo Regular.png" },
+    { name: "Lamu", logo: "/assets/partners/lamu.png" },
+    { name: "Lux", logo: "/assets/partners/luxpng.png" },
+
   ]
 
   return (
@@ -62,7 +46,7 @@ export default function PartnersPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A1A] text-center mb-8">
             Key Partners
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
             {priorityPartners.map((partner) => (
               <div
                 key={partner.name}
@@ -123,7 +107,7 @@ export default function PartnersPage() {
         <div className="mt-16 text-center">
           <p className="text-sm text-[#666666]">
             Interested in partnering with us?{" "}
-            <a href="https://afrinovationfestival.com/our-patners/" target="_blank" rel="noopener noreferrer" className="text-[#60166b] hover:underline font-medium">
+            <a href="https://www.summit.womenintechblog.dev/" target="_blank" rel="noopener noreferrer" className="text-[#60166b] hover:underline font-medium">
               Get in touch
             </a>
           </p>

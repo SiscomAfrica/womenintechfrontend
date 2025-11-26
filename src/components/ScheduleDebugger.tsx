@@ -21,6 +21,7 @@ export function ScheduleDebugger() {
         const response = await fetch(`${apiUrl}/sessions/my-schedule`, {
           headers: {
             'Content-Type': 'application/json',
+            'X-Client-App': 'womenintech',
             ...(token && { Authorization: `Bearer ${token}` }),
           },
         })

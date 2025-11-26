@@ -162,6 +162,7 @@ export default function ProfilePage() {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
+          'X-Client-App': 'womenintech',
         },
       })
 

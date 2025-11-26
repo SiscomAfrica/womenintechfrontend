@@ -248,6 +248,7 @@ class NotificationService {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
     })
 
@@ -270,6 +271,7 @@ class NotificationService {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
     })
 
@@ -290,6 +292,7 @@ class NotificationService {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
     })
 
@@ -309,6 +312,7 @@ class NotificationService {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
     })
 

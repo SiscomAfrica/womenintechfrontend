@@ -18,6 +18,7 @@ export async function testApiConnection(): Promise<{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
     });
 

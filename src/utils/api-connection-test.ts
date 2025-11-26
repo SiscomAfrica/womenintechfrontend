@@ -72,6 +72,7 @@ export class APIConnectionTester {
     try {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       }
 
       if (endpoint.requiresAuth && this.token) {

@@ -43,6 +43,7 @@ class AttendanceService {
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },

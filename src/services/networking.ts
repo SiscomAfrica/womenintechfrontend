@@ -23,6 +23,7 @@ const apiClient = {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
     })
     if (response.status === 401) {
@@ -42,6 +43,7 @@ const apiClient = {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
       body: JSON.stringify(data),
     })
@@ -62,6 +64,7 @@ const apiClient = {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
       },
       body: JSON.stringify(data),
     })

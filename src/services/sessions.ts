@@ -97,6 +97,8 @@ class SessionsService {
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
+        'X-Tenant-Slug': 'womenintech',
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },

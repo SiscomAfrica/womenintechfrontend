@@ -274,6 +274,7 @@ class AdminService {
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },
@@ -415,6 +416,7 @@ class AdminService {
     const response = await fetch(`${this.baseURL}/admin/analytics/export?time_range=${timeRange}&format=${format}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'X-Client-App': 'womenintech',
       },
     })
     

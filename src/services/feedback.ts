@@ -45,6 +45,7 @@ class FeedbackService {
       ...options,
       headers: {
         'Content-Type': 'application/json',
+        'X-Client-App': 'womenintech',
         ...(token && { Authorization: `Bearer ${token}` }),
         ...options.headers,
       },

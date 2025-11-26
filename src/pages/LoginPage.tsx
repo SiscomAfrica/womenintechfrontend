@@ -96,21 +96,30 @@ export default function LoginPage() {
         code: verificationCode,
       })
       
-      console.log('[LoginPage] Login successful, user:', response.user)
+      console.log('[LoginPage] Login successful, setting token...')
       
-      
-      setUser(response.user)
+      // Set token first
       setToken(response.access_token)
       
-      toast.success('Login successful!')
+      // Fetch fresh user data from API (tenant-specific)
+      const authService = (await import('@/services/auth')).default
+      const userResponse = await authService.getCurrentUser()
       
-      
-      if (response.user.profile_completed) {
-        navigate(from, { replace: true })
-      } else {
+      if (userResponse.success && userResponse.data) {
+        console.log('[LoginPage] Fetched fresh user data:', userResponse.data)
+        setUser(userResponse.data)
         
-        toast.info('Please complete your profile')
-        navigate('/profile-setup', { replace: true })
+        toast.success('Login successful!')
+        
+        // Check profile completion from fresh data
+        if (userResponse.data.profile_completed) {
+          navigate(from, { replace: true })
+        } else {
+          toast.info('Please complete your profile')
+          navigate('/profile-setup', { replace: true })
+        }
+      } else {
+        throw new Error('Failed to fetch user data')
       }
     } catch (error: any) {
       console.error('Failed to verify code:', error)

@@ -136,21 +136,31 @@ export default function RegisterPage() {
         code: verificationCode,
       })
       
-      console.log('[RegisterPage] Signup code verified, user:', response.user)
+      console.log('[RegisterPage] Signup code verified, setting token...')
       
-      // Store auth data in store
-      setUser(response.user)
+      // Set token first
       setToken(response.access_token)
       
-      toast.success('Email verified successfully!')
+      // Fetch fresh user data from API (tenant-specific)
+      const authService = (await import('@/services/auth')).default
+      const userResponse = await authService.getCurrentUser()
       
-      if (response.user.profile_completed) {
-        console.log('[RegisterPage] Profile already complete, navigating to dashboard')
-        navigate('/dashboard', { replace: true })
+      if (userResponse.success && userResponse.data) {
+        console.log('[RegisterPage] Fetched fresh user data:', userResponse.data)
+        setUser(userResponse.data)
+        
+        toast.success('Email verified successfully!')
+        
+        // Check profile completion from fresh data
+        if (userResponse.data.profile_completed) {
+          console.log('[RegisterPage] Profile already complete, navigating to dashboard')
+          navigate('/dashboard', { replace: true })
+        } else {
+          console.log('[RegisterPage] Navigating to profile setup page')
+          navigate('/profile-setup', { replace: true })
+        }
       } else {
-        // Navigate to profile setup page
-        console.log('[RegisterPage] Navigating to profile setup page')
-        navigate('/profile-setup', { replace: true })
+        throw new Error('Failed to fetch user data')
       }
     } catch (error: any) {
       console.error('Failed to verify signup code:', error)

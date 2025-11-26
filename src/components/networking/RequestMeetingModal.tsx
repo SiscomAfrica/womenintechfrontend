@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Loader2 } from 'lucide-react'
 import { useCreateMeetingRequest } from '@/hooks/useMeetings'
+import sessionsService from '@/services/sessions'
 
 interface RequestMeetingModalProps {
   open: boolean
@@ -31,8 +32,60 @@ export function RequestMeetingModal({
   const [location, setLocation] = useState('')
   const [message, setMessage] = useState('')
   
-  // Event dates (Nov 13-14, 2025)
-  const eventDates = ['2025-11-13', '2025-11-14']
+  // Event dates from backend
+  const [eventDates, setEventDates] = useState<Array<{ date: string; label: string; day: number }>>([])
+  const [isLoadingDates, setIsLoadingDates] = useState(true)
+  
+  // Fetch event dates from sessions
+  useEffect(() => {
+    const fetchEventDates = async () => {
+      try {
+        setIsLoadingDates(true)
+        const sessions = await sessionsService.getSchedule()
+        
+        // Extract unique dates from sessions
+        const uniqueDates = new Map<string, { date: string; label: string; day: number }>()
+        
+        sessions.forEach(session => {
+          const sessionDate = new Date(session.start_time)
+          const dateStr = sessionDate.toISOString().split('T')[0]
+          
+          if (!uniqueDates.has(dateStr)) {
+            const dateLabel = sessionDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })
+            uniqueDates.set(dateStr, {
+              date: dateStr,
+              label: `${dateLabel} (Day ${session.day})`,
+              day: session.day
+            })
+          }
+        })
+        
+        // Sort by date
+        const sortedDates = Array.from(uniqueDates.values()).sort((a, b) => 
+          a.date.localeCompare(b.date)
+        )
+        
+        setEventDates(sortedDates)
+      } catch (error) {
+        console.error('Failed to fetch event dates:', error)
+        // Fallback to default dates if fetch fails
+        setEventDates([
+          { date: '2025-11-28', label: 'November 28, 2025 (Day 1)', day: 1 },
+          { date: '2025-11-29', label: 'November 29, 2025 (Day 2)', day: 2 }
+        ])
+      } finally {
+        setIsLoadingDates(false)
+      }
+    }
+    
+    if (open) {
+      fetchEventDates()
+    }
+  }, [open])
   
   // Generate hours (1-12) and minutes (00, 15, 30, 45)
   const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'))
@@ -90,7 +143,8 @@ export function RequestMeetingModal({
         <DialogHeader>
           <DialogTitle>Schedule Meeting with {receiverName}</DialogTitle>
           <DialogDescription>
-            Request a 1-on-1 meeting during the event (Nov 13-14, 2025)
+            Request a 1-on-1 meeting during the event
+            {eventDates.length > 0 && ` (${eventDates.map(d => new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })).join(', ')})`}
           </DialogDescription>
         </DialogHeader>
 
@@ -98,13 +152,16 @@ export function RequestMeetingModal({
           {/* Date Selection */}
           <div className="space-y-2">
             <Label htmlFor="date">Meeting Date *</Label>
-            <Select value={proposedDate} onValueChange={setProposedDate} required>
+            <Select value={proposedDate} onValueChange={setProposedDate} required disabled={isLoadingDates}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select event date" />
+                <SelectValue placeholder={isLoadingDates ? "Loading dates..." : "Select event date"} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="2025-11-13">November 13, 2025 (Day 1)</SelectItem>
-                <SelectItem value="2025-11-14">November 14, 2025 (Day 2)</SelectItem>
+                {eventDates.map((eventDate) => (
+                  <SelectItem key={eventDate.date} value={eventDate.date}>
+                    {eventDate.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
